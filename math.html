@@ -1,0 +1,393 @@
+Shubham Yadav:
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Maths PYQ Test</title>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial;
+padding:20px;
+}
+
+h1{
+text-align:center;
+}
+
+.question{
+background:#1e293b;
+padding:20px;
+margin-top:20px;
+border-radius:15px;
+}
+
+button{
+width:100%;
+padding:15px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#dc2626;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+button:hover{
+background:#b91c1c;
+}
+
+.result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+
+.trick{
+margin-top:10px;
+color:#facc15;
+font-size:16px;
+}
+
+#score{
+text-align:center;
+font-size:28px;
+margin-top:20px;
+color:#22c55e;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Maths PYQ Test</h1>
+
+<div id="score">
+Score: 0
+</div>
+
+<div class="question">
+
+<h2>Q1. Agar x² - 5x + 6 = 0 ke roots alpha, beta hain, to alpha² + beta² = ?</h2>
+
+<button onclick="checkAnswer(this,'A',true)">
+A) 13
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+B) 25
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+C) 11
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+D) 37
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: alpha + beta = 5, alpha*beta = 6. alpha²+beta² = 25 - 12 = 13
+</p>
+
+</div>
+
+<div class="question">
+
+<h2>Q2. sin 15° ka maan kya hai?</h2>
+
+<button onclick="checkAnswer(this,'A',true)">
+A) (√6 - √2)/4
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+B) (√6 + √2)/4
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+C) (√3 - 1)/2√2
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+D) (√3 + 1)/2√2
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: sin(45-30) formula use karo
+</p>
+
+</div>
+
+<div class="question">
+
+<h2>Q3. d/dx (x^x) = ?</h2>
+
+<button onclick="checkAnswer(this,'B')">
+A) x^x
+</button>
+
+<button onclick="checkAnswer(this,'B',true)">
+B) x^x(1 + log x)
+</button>
+
+<button onclick="checkAnswer(this,'B')">
+C) x*x^(x-1)
+</button>
+
+<button onclick="checkAnswer(this,'B')">
+D) x^x log x
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: log differentiation use karo
+</p>
+
+</div>
+
+<div class="question">
+
+<h2>Q4. ∫1/(x² + 4) dx = ?</h2>
+
+<button onclick="checkAnswer(this,'A',true)">
+A) (1/2) tan⁻¹(x/2) + C
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+B) tan⁻¹(x/2) + C
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+C) (1/4) tan⁻¹(x/4) + C
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+D) log(x²+4)
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: Formula ∫1/(x²+a²)
+</p>
+
+</div>
+
+<div class="question">
+
+<h2>Q5. (2,3) se 3x + 4y - 5 = 0 par lamba ki lambai?</h2>
+
+<button onclick="checkAnswer(this,'B')">
+A) 1
+</button>
+
+<button onclick="checkAnswer(this,'B',true)">
+B) 13/5
+</button>
+
+<button onclick="checkAnswer(this,'B')">
+C) 3
+</button>
+
+<button onclick="checkAnswer(this,'B')">
+D) 5
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: Distance formula use karo
+</p>
+
+</div>
+
+<div class="question">
+
+<h2>Q6. Agar A = [1 2; 3 4], to |A| = ?</h2>
+
+<button onclick="checkAnswer(this,'A',true)">
+A) -2
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+B) 2
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+C) 10
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+D) -10
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: ad - bc
+</p>
+
+</div>
+
+<div class="question">
+
+<h2>Q7. lim x→0 sin(3x)/x = ?</h2>
+
+<button onclick="checkAnswer(this,'C')">
+A) 0
+</button>
+
+<button onclick="checkAnswer(this,'C')">
+B) 1
+</button>
+
+<button onclick="checkAnswer(this,'C',true)">
+C) 3
+</button>
+
+<button onclick="checkAnswer(this,'C')">
+D) ∞
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: lim sin(ax)/x = a
+</p>
+
+</div>
+
+<div class="question">
+
+<h2>Q8. 5P2 ka maan?</h2>
+
+<button onclick="checkAnswer(this,'B')">
+A) 10
+</button>
+
+<button onclick="checkAnswer(this,'B',true)">
+B) 20
+</button>
+
+<button onclick="checkAnswer(this,'B')">
+C) 25
+</button>
+
+<button onclick="checkAnswer(this,'B')">
+D) 120
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: nPr formula
+</p>
+
+</div>
+
+<div class="question">
+
+<h2>Q9. y = x³ - 3x ka minima kis x par hai?</h2>
+
+<button onclick="checkAnswer(this,'A',true)">
+A) x = 1
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+B) x = -1
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+C) x = 0
+</button>
+
+<button onclick="checkAnswer(this,'A')">
+D) x = 3
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: First and second derivative test
+</p>
+
+</div>
+
+<div class="question">
+
+<h2>Q10. Vector i+j aur i-j ke beech ka angle?</h2>
+
+<button onclick="checkAnswer(this,'C')">
+A) 0°
+</button>
+
+<button onclick="checkAnswer(this,'C')">
+B) 45°
+</button>
+
+<button onclick="checkAnswer(this,'C',true)">
+C) 90°
+</button>
+
+<button onclick="checkAnswer(this,'C')">
+D) 180°
+</button>
+
+<p class="result"></p>
+
+<p class="trick">
+Trick: Dot product = 0 ⇒ 90°
+</p>
+
+</div>
+
+<script>
+
+let score = 0;
+
+function checkAnswer(button,correct,isCorrect=false){
+
+let result =
+button.parentElement.querySelector(".result");
+
+if(result.innerHTML != ""){
+return;
+}
+
+if(isCorrect){
+
+result.innerHTML =
+"✅ Correct Answer";
+
+score++;
+
+document.getElementById("score").innerHTML =
+"Score: " + score;
+
+}
+
+else{
+
+result.innerHTML =
+"❌ Wrong Answer <br> ✅ Correct Option: " + correct;
+
+}
+
+}
+
+</script>
+
+</body>
+  </html>
