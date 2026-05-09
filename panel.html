@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JEE Admin Panel</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    textarea { width: 100%; height: 80px; }
+    button { margin: 5px; padding: 5px 10px; }
+  </style>
+</head>
+<body>
+
+<h2>📌 JEE Admin Panel</h2>
+
+<select id="subject" onchange="showQuestions()">
+  <option value="physics">Physics</option>
+  <option value="chemistry">Chemistry</option>
+  <option value="math">Math</option>
+</select>
+
+<br><br>
+
+<textarea id="question" placeholder="Enter question"></textarea>
+<br>
+
+<button onclick="addQuestion()">➕ Add / Update Question</button>
+
+<p id="msg"></p>
+
+<hr>
+
+<h3>📋 Questions List</h3>
+<div id="list"></div>
+
+<script>
+let editIndex = -1;
+
+function getData(sub) {
+    return JSON.parse(localStorage.getItem(sub)) || [];
+}
+
+function saveData(sub, data) {
+    localStorage.setItem(sub, JSON.stringify(data));
+}
+
+function addQuestion() {
+    let sub = document.getElementById("subject").value;
+    let q = document.getElementById("question").value;
+
+    if(q === "") {
+        alert("Question empty hai!");
+        return;
+    }
+
+    let data = getData(sub);
+
+    if(editIndex === -1) {
+        data.push(q);
+    } else {
+        data[editIndex] = q;
+        editIndex = -1;
+    }
+
+    saveData(sub, data);
+
+    document.getElementById("question").value = "";
+    document.getElementById("msg").innerText = "✅ Saved Successfully";
+
+    showQuestions();
+}
+
+function showQuestions() {
+    let sub = document.getElementById("subject").value;
+    let data = getData(sub);
+
+    let html = "";
+
+    data.forEach((q, i) => {
+        html += 
+        <p>
+        ${i+1}. ${q}
+        <button onclick="editQ(${i})">✏ Edit</button>
+        <button onclick="deleteQ(${i})">❌ Delete</button>
+        </p>
+        ;
+    });
+
+    document.getElementById("list").innerHTML = html;
+}
+
+function deleteQ(i) {
+    let sub = document.getElementById("subject").value;
+    let data = getData(sub);
+
+    data.splice(i, 1);
+    saveData(sub, data);
+
+    showQuestions();
+}
+
+function editQ(i) {
+    let sub = document.getElementById("subject").value;
+    let data = getData(sub);
+
+    document.getElementById("question").value = data[i];
+    editIndex = i;
+}
+
+showQuestions();
+</script>
+
+</body>
+  </html>
