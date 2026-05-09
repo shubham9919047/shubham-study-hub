@@ -1,41 +1,317 @@
+Shubham Yadav:
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JEE PYQ MASTER</title>
 
-<title>JEE PYQ MASTER</title>
+  <style>
 
-<link rel="stylesheet" href="css/style.css">
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#0f172a;
+      color:white;
+    }
+
+    nav{
+      background:#111827;
+      padding:18px 8%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      box-shadow:0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    nav h1{
+      color:#38bdf8;
+      font-size:30px;
+    }
+
+    nav ul{
+      display:flex;
+      list-style:none;
+      gap:20px;
+    }
+
+    nav ul li a{
+      color:white;
+      text-decoration:none;
+      font-size:18px;
+      transition:0.3s;
+    }
+
+    nav ul li a:hover{
+      color:#38bdf8;
+    }
+
+    .hero{
+      min-height:90vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:50px;
+      flex-wrap:wrap;
+      padding:50px 8%;
+      background:linear-gradient(to right,#0f172a,#1e293b);
+    }
+
+    .hero-text{
+      flex:1;
+      min-width:300px;
+    }
+
+    .hero-text h2{
+      font-size:55px;
+      margin-bottom:20px;
+      line-height:1.2;
+    }
+
+    .hero-text span{
+      color:#38bdf8;
+    }
+
+    .hero-text p{
+      font-size:20px;
+      line-height:1.8;
+      color:#cbd5e1;
+      margin-bottom:30px;
+    }
+
+    .btn{
+      display:inline-block;
+      background:#38bdf8;
+      color:black;
+      padding:15px 35px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    .btn:hover{
+      background:white;
+      transform:scale(1.05);
+    }
+
+    .hero-image{
+      flex:1;
+      min-width:280px;
+      text-align:center;
+    }
+
+    .hero-image img{
+      width:320px;
+      height:320px;
+      border-radius:50%;
+      object-fit:cover;
+      border:6px solid #38bdf8;
+      box-shadow:0 0 30px rgba(56,189,248,0.5);
+    }
+
+    .subjects{
+      padding:70px 8%;
+      background:#111827;
+    }
+
+    .subjects h2{
+      text-align:center;
+      font-size:40px;
+      margin-bottom:40px;
+      color:#38bdf8;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:30px;
+    }
+
+    .card{
+      background:#1e293b;
+      padding:35px;
+      border-radius:20px;
+      text-align:center;
+      transition:0.3s;
+      border:2px solid transparent;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+      border-color:#38bdf8;
+    }
+
+    .card h3{
+      font-size:32px;
+      margin-bottom:15px;
+    }
+
+    .card p{
+      color:#cbd5e1;
+      margin-bottom:20px;
+      line-height:1.6;
+    }
+
+    .card a{
+      text-decoration:none;
+      background:#38bdf8;
+      color:black;
+      padding:12px 25px;
+      border-radius:8px;
+      font-weight:bold;
+      display:inline-block;
+    }
+
+    footer{
+      background:black;
+      text-align:center;
+      padding:20px;
+      color:#94a3b8;
+    }
+
+    @media(max-width:768px){
+
+      nav{
+        flex-direction:column;
+        gap:15px;
+      }
+
+      .hero-text h2{
+        font-size:38px;
+      }
+
+      .hero-image img{
+        width:250px;
+        height:250px;
+      }
+
+    }
+
+  </style>
 
 </head>
-
 <body>
 
-<header>
+  <!-- Navbar -->
 
-<h1>JEE PYQ MASTER</h1>
+  <nav>
 
-<p>Physics • Chemistry • Maths</p>
+    <h1>JEE PYQ MASTER</h1>
 
-</header>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="physics.html">Physics</a></li>
+      <li><a href="chemistry.html">Chemistry</a></li>
+      <li><a href="maths.html">Maths</a></li>
+    </ul>
 
-<div class="container">
+  </nav>
 
-<a href="physics.html" class="card physics">
-<h2>Physics</h2>
-</a>
+  <!-- Hero Section -->
 
-<a href="chemistry.html" class="card chemistry">
-<h2>Chemistry</h2>
-</a>
+  <section class="hero">
 
-<a href="maths.html" class="card maths">
-<h2>Maths</h2>
-</a>
+    <div class="hero-text">
 
-</div>
+      <h2>
+        Crack <span>JEE 2027</span><br>
+        With Daily Practice 🚀
+      </h2>
+
+      <p>
+        "Dream is not what you see in sleep,<br>
+        Dream is something which does not let you sleep."<br><br>
+
+        Practice PYQs daily and become future IITian.
+      </p>
+
+      <a href="physics.html" class="btn">
+        Start Learning
+      </a>
+
+    </div>
+
+    <div class="hero-image">
+
+<!-- Apni image ka naam yaha likho -->
+
+      <img src="myphoto.jpg" alt="Shubham">
+
+    </div>
+
+  </section>
+
+  <!-- Subjects -->
+
+  <section class="subjects">
+
+    <h2>Choose Your Subject</h2>
+
+    <div class="cards">
+
+      <!-- Physics -->
+
+      <div class="card">
+
+        <h3>Physics</h3>
+
+        <p>
+          Mechanics, Kinematics, NLM,
+          Work Power Energy & PYQs
+        </p>
+
+        <a href="physics.html">Open</a>
+
+      </div>
+
+      <!-- Chemistry -->
+
+      <div class="card">
+
+        <h3>Chemistry</h3>
+
+        <p>
+          Organic, Inorganic,
+          Physical Chemistry Questions
+        </p>
+
+        <a href="chemistry.html">Open</a>
+
+      </div>
+
+      <!-- Maths -->
+
+      <div class="card">
+
+        <h3>Maths</h3>
+
+        <p>
+          Algebra, Trigonometry,
+          Coordinate & Calculus PYQs
+        </p>
+
+        <a href="maths.html">Open</a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+
+  <footer>
+
+    © 2026 JEE PYQ MASTER | Made By Shubham Yadav
+
+  </footer>
 
 </body>
 </html>
