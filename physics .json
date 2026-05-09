@@ -1,0 +1,13 @@
+[
+  {
+    "question":"Velocity of particle after 5 sec?",
+    "options":["10","20","30","40"],
+    "answer":"20"
+  },
+
+  {
+    "question":"SI unit of force?",
+    "options":["Joule","Newton","Pascal","Watt"],
+    "answer":"Newton"
+  }
+]
