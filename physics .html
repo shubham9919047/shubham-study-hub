@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics - JEE PYQ MASTER</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+        body{background:#0f172a;color:#e2e8f0;padding:15px}
+       .header{background:#1e293b;padding:15px;border-radius:12px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+       .header h1{color:#38bdf8;font-size:24px}
+       .back-btn{background:#334155;color:#e2e8f0;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;text-decoration:none}
+       .back-btn:hover{background:#475569}
+       .search-box{background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:8px;color:#e2e8f0;width:250px}
+       .chapter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px}
+       .chapter-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:20px;cursor:pointer;transition:all 0.3s}
+       .chapter-card:hover{transform:translateY(-5px);border-color:#38bdf8;box-shadow:0 10px 20px rgba(56,189,248,0.1)}
+       .chapter-card h3{color:#38bdf8;margin-bottom:8px;font-size:17px}
+       .chapter-card p{color:#94a3b8;font-size:13px;margin-bottom:12px;line-height:1.4}
+       .stats{display:flex;justify-content:space-between;font-size:12px;color:#64748b}
+       .badge{background:#0ea5e9;color:white;padding:2px 8px;border-radius:12px;font-size:11px}
+       .quiz-container{display:none;background:#1e293b;border-radius:12px;padding:20px}
+       .quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:1px solid #334155;flex-wrap:wrap;gap:10px}
+       .q-box{background:#0f172a;padding:15px;border-radius:8px;margin:15px 0;border-left:3px solid #38bdf8}
+       .options{margin:15px 0}
+       .options label{display:block;background:#1e293b;padding:12px;margin:8px 0;border-radius:8px;cursor:pointer;border:1px solid #334155}
+       .options label:hover{border-color:#38bdf8}
+       .options input{margin-right:10px}
+       .num-input{padding:12px;background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:8px;width:200px}
+       .btn{background:#38bdf8;color:#0f172a;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;margin:5px}
+       .btn:hover{background:#0ea5e9}
+       .btn-red{background:#ef4444;color:white}
+       .solution{background:#0f172a;border:1px solid #22c55e;border-radius:8px;padding:15px;margin-top:15px;display:none}
+       .correct{color:#22c55e;font-weight:600}
+       .wrong{color:#ef4444;font-weight:600}
+       .progress-text{color:#94a3b8;font-size:14px}
+        @media(max-width:768px){.chapter-grid{grid-template-columns:1fr}.search-box{width:100%}}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Physics - All Chapters</h1>
+        <input type="text" class="search-box" placeholder="Search Chapter..." onkeyup="searchChapter(this.value)">
+        <a href="index.html" class="back-btn">← Home</a>
+    </div>
+
+    <div id="chapterList" class="chapter-grid"></div>
+    
+    <div id="quizContainer" class="quiz-container">
+        <div class="quiz-header">
+            <div>
+                <h2 id="chapterTitle" style="color:#38bdf8;"></h2>
+                <p class="progress-text" id="qProgress"></p>
+            </div>
+            <button class="btn btn-red" onclick="closeQuiz()">Close Chapter</button>
+        </div>
+        <div id="questionArea"></div>
+        <div style="margin-top:20px;">
+            <button class="btn" onclick="prevQ()">← Previous</button>
+            <button class="btn" onclick="nextQ()">Next →</button>
+            <button class="btn" onclick="checkAns()" style="background:#22c55e">Check Answer</button>
+        </div>
+    </div>
+    <script>
+window.MathJax = {tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},svg: {fontCache: 'global'}};
+
+const physicsData = {
+    "Units & Dimensions": {
+        desc: "SI Units, Dimensional Analysis, Errors & Measurements",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'Dimension of Planck constant is same as:', opt:['A) Energy', 'B) Angular Momentum', 'C) Linear Momentum', 'D) Force'], ans:'B', sol:'$E = h\\nu$ → $[h] = [E]/[\\nu] = ML^2T^{-1}$, same as angular momentum'},
+            {type:'NV', q:'If $P = \\frac{a^3b^2}{c\\sqrt{d}}$, % error in P if a=1%, b=2%, c=3%, d=4% is ___%', ans:'12', sol:'$\\frac{\\Delta P}{P} = 3\\frac{\\Delta a}{a} + 2\\frac{\\Delta b}{b} + \\frac{\\Delta c}{c} + \\frac{1}{2}\\frac{\\Delta d}{d} = 3+4+3+2=12$%'},
+            {type:'MC', q:'Which are dimensionless:', opt:['A) Strain', 'B) Refractive Index', 'C) Poisson ratio', 'D) Stress'], ans:['A','B','C'], sol:'Stress has dimension $ML^{-1}T^{-2}$'}
+        ]
+    },
+    "Vectors & Calculus": {
+        desc: "Vectors, Dot/Cross Product, Differentiation, Integration",
+        totalQ: 4,
+        questions: [
+            {type:'SC', q:'If $\\vec{A} = 3\\hat{i} + 4\\hat{j}$ and $\\vec{B} = 6\\hat{i} + 8\\hat{j}$, then $|\\vec{A} + \\vec{B}|$ is:', opt:['A) 15', 'B) 25', 'C) 5', 'D) 10'], ans:'A', sol:'$\\vec{A} + \\vec{B} = 9\\hat{i} + 12\\hat{j}$. Magnitude = $\\sqrt{81+144} = 15$'},
+            {type:'SC', q:'Derivative of $\\sin(x^2)$ w.r.t x is:', opt:['A) $\\cos(x^2)$', 'B) $2x\\cos(x^2)$', 'C) $2x\\sin(x^2)$', 'D) $-2x\\cos(x^2)$'], ans:'B', sol:'Chain rule: $\\cos(x^2).2x$'},
+            {type:'NV', q:'If $|\\vec{A} + \\vec{B}| = |\\vec{A} - \\vec{B}|$ and $|A|=5$, $|B|=12$, then $|\\vec{A} \\times \\vec{B}|$ = ___', ans:'60', sol:'Condition → $\\vec{A} \\cdot \\vec{B} = 0$ → $\\theta=90°$. So $|\\vec{A} \\times \\vec{B}| = 5×12 = 60$'},
+            {type:'NV', q:'$\\int_0^2 x^2 dx$ = ___', ans:'2.67', sol:'$[x^3/3]_0^2 = 8/3 = 2.67$'}
+        ]
+    },
+    "Kinematics": {
+        desc: "Motion in 1D, 2D, Projectile, Relative Motion, River-Boat",
+        totalQ: 4,
+        questions: [
+            {type:'SC', q:'A particle has velocity $v = 4t - t^2$ m/s. Displacement in first 3s is:', opt:['A) 9 m', 'B) 18 m', 'C) 0 m', 'D) 4.5 m'], ans:'A', sol:'$s = \\int_0^3 (4t-t^2)dt = [2t^2 - t^3/3] = 18-9 = 9$'},
+            {type:'SC', q:'Range of projectile is max when angle is:', opt:['A) 30°', 'B) 45°', 'C) 60°', 'D) 90°'], ans:'B', sol:'$R = \\frac{u^2\\sin2\\theta}{g}$, max when $\\sin2\\theta=1$ → $\\theta=45°$'},
+            {type:'NV', q:'If $x = t^3 - 9t^2 + 24t$, acceleration at t=2s is ___ m/s²', ans:'-6', sol:'$v = 3t^2-18t+24$, $a = 6t-18 = 12-18 = -6$'},
+            {type:'NV', q:'First half distance 40 m/s, second half 60 m/s. Avg speed = ___ m/s', ans:'48', sol:'$v_{avg} = \\frac{2v_1v_2}{v_1+v_2} = 4800/100 = 48$'}
+        ]
+    },
+    "Laws of Motion": {
+        desc: "Newton's Laws, Friction, Circular Motion, Banking",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'A block on rough incline angle $\\theta$. Min $\\mu$ to prevent sliding:', opt:['A) $\\sin\\theta$', 'B) $\\cos\\theta$', 'C) $\\tan\\theta$', 'D) $\\cot\\theta$'], ans:'C', sol:'$mg\\sin\\theta = \\mu mg\\cos\\theta$ → $\\mu = \\tan\\theta$'},
+            {type:'MC', q:'In uniform circular motion:', opt:['A) Speed constant', 'B) Velocity constant', 'C) Acceleration towards center', 'D) KE constant'], ans:['A','C','D'], sol:'Velocity direction changes, so not constant'},
+            {type:'NV', q:'Car takes turn radius 100m at 20m/s. Min $\\mu$ = ___', ans:'0.4', sol:'$\\mu mg = mv^2/r$ → $\\mu = v^2/gr = 400/1000 = 0.4$'}
+        ]
+    },
+    "Work Power Energy": {
+        desc: "Work-Energy Theorem, Conservation, Power, Collisions",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'Work done by centripetal force is:', opt:['A) Positive', 'B) Negative', 'C) Zero', 'D) Depends on radius'], ans:'C', sol:'Force ⊥ displacement always, so $W = F.s\\cos90° = 0$'},
+            {type:'NV', q:'2kg mass dropped from 20m. KE just before ground = ___ J', ans:'400', sol:'$mgh = 2×10×20 = 400$ J'},
+            {type:'MC', q:'Elastic collision:', opt:['A) KE conserved', 'B) Momentum conserved', 'C) $e=1$', 'D) Bodies stick together'], ans:['A','B','C'], sol:'D is for perfectly inelastic'}
+        ]
+    },
+    "Center of Mass & Collisions": {
+        desc: "COM, Linear Momentum, Impulse, Elastic/Inelastic Collision",
+        totalQ: 2,
+        questions: [
+            {type:'SC', q:'Two masses 2kg & 3kg at (0,0) & (5,0). COM at:', opt:['A) (2,0)', 'B) (3,0)', 'C) (2.5,0)', 'D) (5,0)'], ans:'B', sol:'$x_{cm} = \\frac{2×0+3×5}{5} = 3$'},
+            {type:'NV', q:'Ball mass 0.5kg hits wall at 10m/s and rebounds at 8m/s. Impulse = ___ Ns', ans:'9', sol:'$J = \\Delta p = m(v_f - v_i) = 0.5(8-(-10)) = 9$'}
+        ]
+    },
+    "Rotational Motion": {
+        desc: "Moment of Inertia, Torque, Angular Momentum, Rolling",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'MI of solid sphere about diameter:', opt:['A) $\\frac{2}{5}MR^2$', 'B) $\\frac{1}{2}MR^2$', 'C) $MR^2$', 'D) $\\frac{2}{3}MR^2$'], ans:'A', sol:'Standard result for solid sphere'},
+            {type:'MC', q:'For pure rolling without slipping:', opt:['A) $v_{cm} = R\\omega$', 'B) Friction may be zero', 'C) KE = $\\frac{1}{2}mv^2 + \\frac{1}{2}I\\omega^2$', 'D) $a_{cm} = R\\alpha$'], ans:['A','B','C','D'], sol:'All are conditions for pure rolling'},
+            {type:'NV', q:'Disc rolling has total KE = 2×KE_trans. If v=4m/s, $\\omega$ for R=0.5m = ___ rad/s', ans:'8', sol:'$v = R\\omega$ → $\\omega = 4/0.5 = 8$'}
+        ]
+    },
+    "Gravitation": {
+        desc: "Kepler's Laws, Gravitational Field, Potential, Escape Velocity",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'Escape velocity from Earth is:', opt:['A) 7.9 km/s', 'B) 11.2 km/s', 'C) 9.8 km/s', 'D) 15 km/s'], ans:'B', sol:'$v_e = \\sqrt{2gR} ≈ 11.2$ km/s'},
+            {type:'NV', q:'Satellite at R from Earth center. Time period ∝ $R^{___/2}$', ans:'3', sol:'Kepler 3rd law: $T^2 ∝ R^3$ → $T ∝ R^{3/2}$'},
+            {type:'MC', q:'Geostationary satellite:', opt:['A) T = 24 hours', 'B) Orbit in equatorial plane', 'C) Height ≈ 36000 km', 'D) Speed ≈ 3.1 km/s'], ans:['A','B','C','D'], sol:'All properties of geostationary orbit'}
+        ]
+    },
+    "Properties of Matter": {
+        desc: "Elasticity, Stress-Strain, Surface Tension, Viscosity",
+        totalQ: 2,
+        questions: [
+            {type:'SC', q:'Young modulus dimension:', opt:['A) $ML^{-1}T^{-2}$', 'B) $ML^{-2}T^{-2}$', 'C) $MLT^{-2}$', 'D) $M^0L^0T^0$'], ans:'A', sol:'$Y = \\frac{Stress}{Strain}$, Stress has dimension of pressure'},
+            {type:'NV', q:'Excess pressure in soap bubble radius 1cm, T=0.07N/m = ___ Pa', ans:'28', sol:'$\\Delta P = 4T/r = 4×0.07/0.01 = 28$ Pa'}
+        ]
+    },
+    "Fluid Mechanics": {
+        desc: "Pascal's Law, Archimedes, Bernoulli, Torricelli",
+        totalQ: 2,
+        questions: [
+            {type:'SC', q:'Bernoulli equation based on:', opt:['A) Momentum conservation', 'B) Energy conservation', 'C) Mass conservation', 'D) Charge conservation'], ans:'B', sol:'Bernoulli is statement of energy conservation for fluids'},
+            {type:'NV', q:'Velocity of efflux from hole 5m deep = ___ m/s', ans:'10', sol:'$v = \\sqrt{2gh} = \\sqrt{2×10×5} = 10$'}
+        ]
+    },
+    "Thermodynamics": {
+        desc: "Laws of Thermo, Heat Engine, Carnot, Kinetic Theory",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'For adiabatic process:', opt:['A) $PV = $ constant', 'B) $PV^\\gamma = $ constant', 'C) $V/T = $ constant', 'D) $P/T = $ constant'], ans:'B', sol:'Adiabatic: $PV^\\gamma$ = constant'},
+            {type:'MC', q:'Carnot engine:', opt:['A) Max efficiency', 'B) Reversible', 'C) $\\eta = 1 - T_2/T_1$', 'D) Works between 2 temps'], ans:['A','B','C','D'], sol:'All are properties of Carnot cycle'},
+            {type:'NV', q:'Monoatomic gas $C_p/C_v$ = ___', ans:'1.67', sol:'$\\gamma = 1 + 2/f = 1 + 2/3 = 5/3 = 1.67$'}
+        ]
+    },
+    "Oscillations & SHM": {
+        desc: "Simple Harmonic Motion, Pendulum, Damped Oscillation",
+        totalQ: 2,
+        questions: [
+            {type:'SC', q:'Time period of spring-mass system:', opt:['A) $2\\pi\\sqrt{m/k}$', 'B) $2\\pi\\sqrt{k/m}$', 'C) $2\\pi\\sqrt{l/g}$', 'D) $2\\pi\\sqrt{g/l}$'], ans:'A', sol:'$T = 2\\pi\\sqrt{m/k}$ for spring'},
+            {type:'NV', q:'SHM: $x = 5\\sin(2\\pi t)$. Max velocity = ___ m/s', ans:'31.4', sol:'$v_{max} = A\\omega = 5×2\\pi = 31.4$'}
+        ]
+    },
+    "Waves": {
+        desc: "Wave Equation, Sound Waves, Doppler, Superposition",
+        totalQ: 2,
+        questions: [
+            {type:'SC', q:'Speed of sound in air ∝:', opt:['A) $\\sqrt{T}$', 'B) $T$', 'C) $1/\\sqrt{T}$', 'D) $T^2$'], ans:'A', sol:'$v = \\sqrt{\\gamma RT/M}$ ∝ $\\sqrt{T}$'},
+            {type:'NV', q:'Beat frequency if 256Hz & 260Hz = ___ Hz', ans:'4', sol:'Beat freq = $|f_1-f_2| = 4$'}
+        ]
+    }
+    ,
+    "Electrostatics": {
+        desc: "Coulomb's Law, Electric Field, Potential, Gauss Law, Dipole",
+        totalQ: 4,
+        questions: [
+            {type:'SC', q:'Electric field at distance r from infinite line charge $\\lambda$ is $E$. At r/2, field becomes:', opt:['A) E', 'B) 2E', 'C) E/2', 'D) 4E'], ans:'B', sol:'For line charge $E \\propto 1/r$'},
+            {type:'MC', q:'Two infinite sheets with $+\\sigma$ and $+\\sigma$:', opt:['A) Field between them is zero', 'B) Field outside is $\\sigma/\\varepsilon_0$', 'C) Force on q between sheets is zero', 'D) Potential difference between sheets is zero'], ans:['A','B','C','D'], sol:'Between: fields cancel, Outside: add'},
+            {type:'NV', q:'Electric field at 0.1m from line charge $\\lambda = 8.85×10^{-12}$ C/m is ___ N/C', ans:'1.6', sol:'$E = \\lambda/2\\pi\\varepsilon_0 r = 1.6$'},
+            {type:'NV', q:'Dipole moment p=2×10⁻⁸ Cm in E=5×10⁴ N/C. Max torque = ___×10⁻⁴ Nm', ans:'10', sol:'$\\tau_{max} = pE = 2×10^{-8}×5×10^4 = 10×10^{-4}$'}
+        ]
+    },
+    "Capacitance": {
+        desc: "Capacitors, Parallel/Series, Dielectric, Energy",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'Capacitance of parallel plate with dielectric K:', opt:['A) $\\varepsilon_0 A/d$', 'B) $K\\varepsilon_0 A/d$', 'C) $\\varepsilon_0 A/Kd$', 'D) $KA/\\varepsilon_0 d$'], ans:'B', sol:'$C = K\\varepsilon_0 A/d$'},
+            {type:'NV', q:'2μF & 3μF in series. Equivalent = ___ μF', ans:'1.2', sol:'$C_{eq} = \\frac{2×3}{2+3} = 1.2$'},
+            {type:'MC', q:'Energy stored in capacitor:', opt:['A) $\\frac{1}{2}CV^2$', 'B) $\\frac{1}{2}QV$', 'C) $\\frac{Q^2}{2C}$', 'D) $CV$'], ans:['A','B','C'], sol:'All three forms equivalent'}
+        ]
+    },
+    "Current Electricity": {
+        desc: "Ohm's Law, Kirchhoff, Wheatstone, RC Circuits",
+        totalQ: 4,
+        questions: [
+            {type:'SC', q:'Kirchhoff 1st law based on:', opt:['A) Energy conservation', 'B) Charge conservation', 'C) Momentum conservation', 'D) Mass conservation'], ans:'B', sol:'KCL: current in = current out, charge conserved'},
+            {type:'NV', q:'12V battery, 2Ω, 3Ω, 6Ω in parallel. Total current = ___ A', ans:'11', sol:'$1/R = 1/2+1/3+1/6 = 1$, R=1Ω. I = 12/1 = 12A? Wait: 1/2+1/3+1/6=1, so R=1Ω, I=12A. Actually 6+4+2=12/12=1. I=12/1=12A', ans:'12', sol:'Corrected: 12A'},
+            {type:'MC', q:'Wheatstone bridge balanced when:', opt:['A) $P/Q = R/S$', 'B) Galvanometer shows zero', 'C) $PS = QR$', 'D) All resistances equal'], ans:['A','B','C'], sol:'D not necessary'},
+            {type:'NV', q:'RC circuit time constant R=10kΩ, C=100μF = ___ s', ans:'1', sol:'$\\tau = RC = 10000×100×10^{-6} = 1$'}
+        ]
+    },
+    "Moving Charges & Magnetism": {
+        desc: "Biot-Savart, Ampere, Lorentz Force, Cyclotron",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'Force on charge q moving with v in B:', opt:['A) $q\\vec{v} \\cdot \\vec{B}$', 'B) $q\\vec{v} \\times \\vec{B}$', 'C) $q\\vec{B} \\times \\vec{v}$', 'D) $qB/v$'], ans:'B', sol:'Lorentz force: $\\vec{F} = q(\\vec{v} \\times \\vec{B})$'},
+            {type:'NV', q:'B at center of circular loop I=10A, R=0.1m = ___×10⁻⁵ T', ans:'6.28', sol:'$B = \\mu_0 I/2R = 4\\pi×10^{-7}×10/0.2 = 6.28×10^{-5}$'},
+            {type:'MC', q:'Cyclotron:', opt:['A) Accelerates charged particles', 'B) Uses magnetic field', 'C) Uses electric field', 'D) Frequency independent of v'], ans:['A','B','C','D'], sol:'All true for cyclotron'}
+        ]
+    },
+    "Magnetism & Matter": {
+        desc: "Bar Magnet, Earth's Magnetism, Magnetic Materials",
+        totalQ: 2,
+        questions: [
+            {type:'SC', q:'Diamagnetic material:', opt:['A) Attracted strongly', 'B) Repelled weakly', 'C) Attracted weakly', 'D) No effect'], ans:'B', sol:'Diamagnetic repelled weakly, $\\mu_r < 1$'},
+            {type:'MC', q:'Ferromagnetic:', opt:['A) Strongly attracted', 'B) $\\mu_r >> 1$', 'C) Retains magnetism', 'D) Example: Iron'], ans:['A','B','C','D'], sol:'All properties of ferromagnetic'}
+        ]
+    },
+    "EMI": {
+        desc: "Faraday's Law, Lenz Law, Motional EMF, Self/Mutual Induction",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'Lenz law is consequence of:', opt:['A) Charge conservation', 'B) Energy conservation', 'C) Momentum conservation', 'D) Mass conservation'], ans:'B', sol:'Lenz law ensures energy conservation in EMI'},
+            {type:'NV', q:'Flux changes 0.5Wb in 0.1s. Induced EMF = ___ V', ans:'5', sol:'$\\varepsilon = d\\phi/dt = 0.5/0.1 = 5$'},
+            {type:'MC', q:'Self induction:', opt:['A) Opposes change in current', 'B) Unit Henry', 'C) $\\varepsilon = -L di/dt$', 'D) Energy stored $\\frac{1}{2}LI^2$'], ans:['A','B','C','D'], sol:'All true'}
+        ]
+    },
+    "AC": {
+        desc: "AC Circuits, LCR, Resonance, Transformer, Power",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'Power factor in AC circuit:', opt:['A) $\\cos\\phi$', 'B) $\\sin\\phi$', 'C) $\\tan\\phi$', 'D) $R/Z$'], ans:'A', sol:'Power factor = $\\cos\\phi = R/Z$'},
+            {type:'NV', q:'LCR resonance: L=1H, C=10μF. f = ___ Hz', ans:'50.3', sol:'$f = 1/2\\pi\\sqrt{LC} = 1/2\\pi\\sqrt{10^{-5}} ≈ 50.3$'},
+            {type:'MC', q:'At resonance in LCR:', opt:['A) $X_L = X_C$', 'B) Z = R minimum', 'C) Current maximum', 'D) Power factor = 1'], ans:['A','B','C','D'], sol:'All resonance conditions'}
+        ]
+    }
+    ,
+    "EM Waves": {
+        desc: "Displacement Current, EM Spectrum, Properties",
+        totalQ: 2,
+        questions: [
+            {type:'SC', q:'EM waves are:', opt:['A) Longitudinal', 'B) Transverse', 'C) Both', 'D) Neither'], ans:'B', sol:'E and B fields ⊥ to propagation'},
+            {type:'MC', q:'EM spectrum order increasing frequency:', opt:['A) Radio→Micro→IR→Visible→UV→X→Gamma', 'B) Gamma→X→UV→Visible→IR→Micro→Radio', 'C) Visible→IR→UV', 'D) Radio→Visible→Gamma'], ans:['A'], sol:'Radio lowest f, Gamma highest'}
+        ]
+    },
+    "Ray Optics": {
+        desc: "Reflection, Refraction, Lens, Mirror, Prism, Optical Instruments",
+        totalQ: 4,
+        questions: [
+            {type:'SC', q:'Lens maker formula:', opt:['A) $\\frac{1}{f} = (n-1)(\\frac{1}{R_1} - \\frac{1}{R_2})$', 'B) $\\frac{1}{f} = \\frac{1}{v} - \\frac{1}{u}$', 'C) $m = v/u$', 'D) $n_1\\sin i = n_2\\sin r$'], ans:'A', sol:'Standard lens maker formula'},
+            {type:'NV', q:'Concave mirror f=20cm, u=30cm. v = ___ cm', ans:'-60', sol:'$1/f = 1/v + 1/u$ → $1/-20 = 1/v + 1/-30$ → v=-60'},
+            {type:'MC', q:'Total Internal Reflection needs:', opt:['A) Denser to rarer', 'B) i > i_c', 'C) Rarer to denser', 'D) i < i_c'], ans:['A','B'], sol:'Must go denser→rarer and i>i_c'},
+            {type:'NV', q:'Prism angle 60°, $\\delta_m$=30°, n = ___', ans:'1.41', sol:'$n = \\sin[(A+\\delta_m)/2]/\\sin(A/2) = \\sin45/\\sin30 = 1.414$'}
+        ]
+    },
+    "Wave Optics": {
+        desc: "Interference, Diffraction, Polarization, YDSE",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'YDSE fringe width β:', opt:['A) $\\lambda D/d$', 'B) $\\lambda d/D$', 'C) $Dd/\\lambda$', 'D) $d/\\lambda D$'], ans:'A', sol:'$\\beta = \\lambda D/d$'},
+            {type:'NV', q:'YDSE: λ=600nm, d=1mm, D=1m. β = ___ mm', ans:'0.6', sol:'$\\beta = 600×10^{-9}×1/10^{-3} = 0.6×10^{-3}$m = 0.6mm'},
+            {type:'MC', q:'Condition for constructive interference:', opt:['A) Path diff = nλ', 'B) Phase diff = 2nπ', 'C) Path diff = (2n+1)λ/2', 'D) Bright fringe'], ans:['A','B','D'], sol:'C is for destructive'}
+        ]
+    },
+    "Modern Physics": {
+        desc: "Photoelectric, Bohr Model, X-rays, Nuclear Physics, Radioactivity",
+        totalQ: 4,
+        questions: [
+            {type:'SC', q:'Photoelectric effect proves:', opt:['A) Wave nature', 'B) Particle nature of light', 'C) Both', 'D) Neither'], ans:'B', sol:'Einstein explained using photons'},
+            {type:'NV', q:'Hydrogen atom: E₁=-13.6eV. E₂ = ___ eV', ans:'-3.4', sol:'$E_n = -13.6/n^2$ → E₂=-13.6/4=-3.4'},
+            {type:'MC', q:'Nuclear force:', opt:['A) Strongest force', 'B) Short range', 'C) Charge independent', 'D) Attractive always'], ans:['A','B','C','D'], sol:'All properties true'},
+            {type:'NV', q:'Half life 10 days. 75% decay in ___ days', ans:'20', sol:'75% decay → 25% left → 2 half lives = 20 days'}
+        ]
+    },
+    "Semiconductors": {
+        desc: "Intrinsic/Extrinsic, PN Junction, Diode, Transistor, Logic Gates",
+        totalQ: 3,
+        questions: [
+            {type:'SC', q:'PN junction forward biased:', opt:['A) Depletion layer increases', 'B) Depletion layer decreases', 'C) No current', 'D) Breakdown occurs'], ans:'B', sol:'Forward bias reduces barrier, depletion layer decreases'},
+            {type:'MC', q:'Zener diode used as:', opt:['A) Rectifier', 'B) Voltage
+     
+        ]
+    }
+};
+
+let currentChapter = '', currentQ = 0, userAns = {};
+
+function loadChapters() {
+    let html = '';
+    for(let chap in physicsData) {
+        const data = physicsData[chap];
+        html += `
+        <div class="chapter-card" onclick="openChapter('${chap}')">
+            <h3>${chap}</h3>
+            <p>${data.desc}</p>
+            <div class="stats">
+                <span>${data.totalQ} Questions</span>
+                <span class="badge">JEE PYQ</span>
+            </div>
+        </div>`;
+    }
+    document.getElementById('chapterList').innerHTML = html;
+}
+
+function searchChapter(val) {
+    val = val.toLowerCase();
+    document.querySelectorAll('.chapter-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(val)? 'block' : 'none';
+    });
+}
+
+function openChapter(chap) {
+    currentChapter = chap;
+    currentQ = 0;
+    userAns = {};
+    document.getElementById('chapterList').style.display = 'none';
+    document.getElementById('quizContainer').style.display = 'block';
+    document.getElementById('chapterTitle').textContent = chap;
+    showQ();
+}
+
+function closeQuiz() {
+    document.getElementById('quizContainer').style.display = 'none';
+    document.getElementById('chapterList').style.display = 'grid';
+    userAns = {};
+}
+
+function showQ() {
+    const q = physicsData[currentChapter].questions[currentQ];
+    const totalQ = physicsData[currentChapter].questions.length;
+    document.getElementById('qProgress').textContent = `Question ${currentQ+1} of ${totalQ}`;
+    
+    let html = `<div class="q-box"><b>Q${currentQ+1}.</b> ${q.q}<br><br>`;
+    
+    if(q.type == 'NV') {
+        html += `Enter Answer: <input type="text" class="num-input" id="ans" value="${userAns[currentQ]||''}" placeholder="Numerical Value">`;
+    } else {
+        html += '<div class="options">';
+        q.opt.forEach((opt,i) => {
+            const val = String.fromCharCode(65+i);
+            const checked = userAns[currentQ]?.includes(val)? 'checked' : '';
+            const type = q.type=='SC'? 'radio' : 'checkbox';
+            html += `<label><input type="${type}" name="q" value="${val}" ${checked} onchange="saveAns('${val}','${q.type}')"> ${opt}</label>`;
+        });
+        html += '</div>';
+    }
+    html += `</div><div class="solution" id="sol"><b>Solution:</b> ${q.sol}</div>`;
+    document.getElementById('questionArea').innerHTML = html;
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+function saveAns(val, type) {
+    if(type=='SC') userAns[currentQ] = [val];
+    else {
+        if(!userAns[currentQ]) userAns[currentQ] = [];
+        if(userAns[currentQ].includes(val)) userAns[currentQ] = userAns[currentQ].filter(v=>v!=val);
+        else userAns[currentQ].push(val);
+    }
+}
+
+function checkAns() {
+    const q = physicsData[currentChapter].questions[currentQ];
+    let userVal = q.type=='NV'? document.getElementById('ans').value : userAns[currentQ];
+    let correct = false;
+    
+    if(q.type=='SC') correct = userVal && userVal[0] == q.ans;
+    else if(q.type=='MC') correct = userVal && userVal.sort().join() == q.ans.sort().join();
+    else correct = Math.abs(parseFloat(userVal) - parseFloat(q.ans)) < 0.01;
+    
+    document.getElementById('sol').style.display = 'block';
+    document.getElementById('sol').innerHTML = `<b class="${correct?'correct':'wrong'}">${correct?'✓ Correct!':'✗ Wrong!'}</b><br><br><b>Solution:</b> ${q.sol}`;
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+function nextQ() {
+    if(currentQ < physicsData[currentChapter].questions.length - 1) {
+        currentQ++;
+        showQ();
+    } else {
+        alert('Chapter Complete! 🎉 Click Close Chapter to go back.');
+    }
+}
+
+function prevQ() {
+    if(currentQ > 0) {
+        currentQ--;
+        showQ();
+    }
+}
+
+loadChapters();
+</script>
+</body>
+</html>
