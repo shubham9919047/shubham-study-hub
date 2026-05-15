@@ -269,3 +269,149 @@ function renderPalette() {
     document.getElementById('palette').innerHTML = html;
 }
 
+        Shubham Yadav:
+function showSubject(sub) {
+    currentSub = sub; currentQ = 0;
+    document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    showQ();
+}
+
+function showQ() {
+    const q = testData[currentSub][currentQ];
+    const globalIdx = startQ[currentSub] + currentQ;
+    document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('current'));
+    document.getElementById(qbtn${globalIdx}).classList.remove('not-visited');
+    document.getElementById(qbtn${globalIdx}).classList.add('current');
+
+    let section = currentQ < 4? '1' : currentQ < 10? '2' : '3';
+    let secType = q.type=='SC'?'Single Correct':q.type=='MC'?'Multiple Correct':'Numerical Value';
+
+    let html = <div class="section-title">${currentSub} - Section ${section} | Question ${globalIdx+1}/51 | ${secType}</div>;
+    html += <div class="question"><b>Q${globalIdx+1}.</b> ${q.q}<br><br>;
+
+    if(q.type == 'NV') {
+        html += Enter Answer: <input type="text" class="num-input" id="ans${globalIdx}" value="${answers[globalIdx]||''}" onchange="saveAns(${globalIdx}, this.value)" placeholder="Enter numerical value">;
+    } else {
+        html += '<div class="options">';
+        q.opt.forEach((opt,i) => {
+            const val = String.fromCharCode(65+i);
+            const checked = answers[globalIdx]?.includes(val)? 'checked' : '';
+            const type = q.type=='SC'? 'radio' : 'checkbox';
+            const name = q.type=='SC'? q${globalIdx} : q${globalIdx}_${i};
+            html += <label><input type="${type}" name="${name}" value="${val}" ${checked} onchange="saveAns(${globalIdx}, '${val}', '${q.type}')"> ${opt}</label>;
+        });
+        html += '</div>';
+    }
+    html += '</div>';
+    document.getElementById('questions').innerHTML = html;
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+function saveAns(idx, val, type) {
+    if(type=='SC') answers[idx] = [val];
+    else if(type=='MC') {
+        if(!answers[idx]) answers[idx] = [];
+        if(answers[idx].includes(val)) answers[idx] = answers[idx].filter(v=>v!=val);
+        else answers[idx].push(val);
+    } else answers[idx] = val;
+    if(answers[idx] && answers[idx].length > 0) document.getElementById(qbtn${idx}).classList.add('answered');
+    else document.getElementById(qbtn${idx}).classList.remove('answered');
+}
+
+function clearResponse() {
+    const globalIdx = startQ[currentSub] + currentQ;
+    delete answers[globalIdx];
+    document.getElementById(qbtn${globalIdx}).classList.remove('answered');
+    showQ();
+}
+
+function nextQ() {
+    if(currentQ < testData[currentSub].length - 1) currentQ++;
+    else {
+        const subs = ['Physics','Chemistry','Maths'];
+        const nextSub = subs[subs.indexOf(currentSub)+1];
+        if(nextSub) {
+            currentSub = nextSub; currentQ = 0;
+            document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.subject-btn')[subs.indexOf(nextSub)].classList.add('active');
+        }
+    }
+    showQ();
+}
+
+function jumpQ(sub, q) {
+    currentSub = sub; currentQ = q;
+    document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.subject-btn')[['Physics','Chemistry','Maths'].indexOf(sub)].classList.add('active');
+    showQ();
+}
+
+function submitTest() {
+    if(!confirm('Are you sure you want to submit? You cannot change answers after this.')) return;
+    clearInterval(timerInterval);
+    let score = 0, total = 0, idx = 0;
+    let analysis = {Physics: {correct:0, wrong:0, unattempt:0, score:0}, Chemistry: {correct:0, wrong:0, unattempt:0, score:0}, Maths: {correct:0, wrong:0, unattempt:0, score:0}};
+
+    ['Physics','Chemistry','Maths'].forEach(sub => {
+        let subTotal = 0, subScore = 0;
+
+testData[sub].forEach((q,i) => {
+            let marks = 0;
+            if(q.type=='SC') {
+                subTotal += 3; total += 3;
+                if(!answers[idx] || answers[idx].length==0) analysis[sub].unattempt++;
+                else if(answers[idx][0] == q.ans) { marks = 3; analysis[sub].correct++; }
+                else { marks = -1; analysis[sub].wrong++; }
+            } else if(q.type=='MC') {
+                subTotal += 4; total += 4;
+                const userAns = answers[idx]||[];
+                const correctAns = q.ans;
+                if(userAns.length==0) { marks = 0; analysis[sub].unattempt++; }
+                else if(userAns.sort().join()==correctAns.sort().join()) { marks = 4; analysis[sub].correct++; }
+                else if(userAns.every(v=>correctAns.includes(v))) { marks = userAns.length; analysis[sub].wrong++; }
+                else { marks = -2; analysis[sub].wrong++; }
+            } else {
+                subTotal += 4; total += 4;
+                if(!answers[idx]) { marks = 0; analysis[sub].unattempt++; }
+                else if(Math.abs(parseFloat(answers[idx]) - parseFloat(q.ans)) < 0.01) { marks = 4; analysis[sub].correct++; }
+                else { marks = 0; analysis[sub].wrong++; }
+            }
+            subScore += marks; score += marks; idx++;
+        });
+        analysis[sub].score = subScore; analysis[sub].total = subTotal;
+    });
+
+    let detailHTML = '<table><tr><th>Subject</th><th>Correct</th><th>Wrong</th><th>Unattempt</th><th>Score</th></tr>';
+    ['Physics','Chemistry','Maths'].forEach(sub => {
+        detailHTML += <tr><td>${sub}</td><td>${analysis[sub].correct}</td><td>${analysis[sub].wrong}</td><td>${analysis[sub].unattempt}</td><td>${analysis[sub].score}/${analysis[sub].total}</td></tr>;
+    });
+    detailHTML += '</table>';
+
+    document.getElementById('content').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('result').innerHTML = 
+        <h2>Test Submitted Successfully!</h2>
+        <h3 style="color:${score>=100?'#2e7d32':'#c62828'};">Total Score: ${score}/183</h3>
+        <div>
+            <div class="score-box"><b>Physics</b><br>${analysis.Physics.score}/60</div>
+            <div class="score-box"><b>Chemistry</b><br>${analysis.Chemistry.score}/60</div>
+            <div class="score-box"><b>Maths</b><br>${analysis.Maths.score}/63</div>
+        </div>
+        <div class="analysis">
+            <h3>Subject-wise Analysis</h3>
+            ${detailHTML}
+            <p style="margin-top:15px;"><b>Time Taken:</b> ${Math.floor((3*60*60-time)/60)} min ${Math.floor((3*60*60-time)%60)} sec</p>
+            <p style="margin-top:10px; color:#666;"><b>JEE Adv 2024 Cutoff:</b> General ~125/360, OBC ~115/360</p>
+            <p style="margin-top:5px; color:${score>=100?'#2e7d32':'#d32f2f'}; font-weight:600;">
+                ${score>=120?'Excellent! IIT Bombay level 🔥':score>=100?'Good! Mid IIT level 💪':score>=60?'Average, practice more 📚':'Need more practice 😓'}
+            </p>
+        </div>
+        <button class="btn btn-next" onclick="location.reload()" style="margin-top:20px;">Restart Test</button>
+    ;
+    document.getElementById('timer').textContent = '00:00:00';
+}
+</script>
+</body>
+</html>
+
