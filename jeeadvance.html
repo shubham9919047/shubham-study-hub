@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEE Advanced 2025 - Paper 1 Mock Test</title>
+    <!-- MathJax for LaTeX rendering -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
+            svg: {fontCache: 'global'}
+        };
+    </script>
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;}
+        body {background: #f0f2f5; padding: 10px; font-size: 14px;}
+      .container {max-width: 1000px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);}
+      .header {background: #1a237e; color: white; padding: 12px 15px; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;}
+      .timer {background: #c62828; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 16px;}
+      .main {display: flex; min-height: 500px; flex-direction: column;}
+       @media (min-width: 768px) {.main {flex-direction: row;}}
+      .sidebar {width: 100%; background: #f5f5f5; padding: 12px; border-bottom: 1px solid #ddd;}
+       @media (min-width: 768px) {.sidebar {width: 250px; border-right: 1px solid #ddd; border-bottom: none;}}
+      .subject-btn {width: 100%; padding: 8px; margin: 4px 0; border: none; background: #3949ab; color: white; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px;}
+      .subject-btn.active {background: #1a237e;}
+      .q-palette {display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 8px;}
+      .q-btn {padding: 6px; border: 1px solid #999; background: white; cursor: pointer; border-radius: 3px; font-size: 11px;}
+      .q-btn.answered {background: #4caf50; color: white;}
+      .q-btn.current {background: #ff9800; color: white;}
+      .content {flex: 1; padding: 15px;}
+      .section-title {background: #e8eaf6; padding: 8px; margin-bottom: 12px; border-left: 4px solid #3f51b5; font-weight: bold; font-size: 13px;}
+      .question {margin-bottom: 20px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 5px; line-height: 1.6;}
+      .options label {display: block; padding: 8px; margin: 4px 0; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 13px;}
+      .options label:hover {background: #f5f5f5;}
+      .num-input {padding: 8px; width: 120px; font-size: 15px; border: 2px solid #3f51b5; border-radius: 4px;}
+      .nav-btns {margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;}
+      .btn {padding: 9px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px;}
+      .btn-next {background: #3f51b5; color: white;}
+      .btn-submit {background: #d32f2f; color: white;}
+      .instructions {background: #fff3e0; padding: 12px; margin-bottom: 15px; border-left: 4px solid #ff9800; font-size: 12px;}
+      .result {display: none; padding: 20px; text-align: center;}
+      .result h2 {color: #1a237e; margin-bottom: 15px;}
+      .score-box {display: inline-block; padding: 15px; background: #e8f5e9; border-radius: 8px; margin: 8px; font-size: 13px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>JEE Advanced 2025 - Paper 1 Mock Test</h3>
+            <div class="timer" id="timer">03:00:00</div>
+        </div>
+        <div class="main">
+            <div class="sidebar">
+                <button class="subject-btn active" onclick="showSubject('Physics')">Physics</button>
+                <button class="subject-btn" onclick="showSubject('Chemistry')">Chemistry</button>
+                <button class="subject-btn" onclick="showSubject('Maths')">Maths</button>
+                <h5 style="margin-top: 12px;">Question Palette</h5>
+                <div class="q-palette" id="palette"></div>
+                <button class="btn btn-submit" style="width: 100%; margin-top: 15px;" onclick="submitTest()">Submit Test</button>
+            </div>
+            <div class="content" id="content">
+                <div class="instructions">
+                    <b>Instructions:</b> Paper 1 | Time: 3 Hours | Max Marks: 144<br>
+                    <b>Sec 1:</b> Q1-4 Single Correct +3/-1 | <b>Sec 2:</b> Q5-8 Multi Correct +4/-2 partial +1 | <b>Sec 3:</b> Q9-12 Numerical +4/0<br>
+                    Each subject 12Q. Total 36Q. Syllabus as per your image.
+                </div>
+                <div id="questions"></div>
+                <div class="nav-btns">
+                    <button class="btn btn-next" onclick="nextQ()">Save & Next</button>
+                </div>
+            </div>
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+
+<script>
+const testData = {
+    Physics: [
+        {type: 'SC', q: 'Two vectors $\\vec{A} = 2\\hat{i} + 3\\hat{j}$ and $\\vec{B} = \\hat{i} - 2\\hat{j}$. Angle between them is:', opt: ['A) $\\cos^{-1}(-4/5\\sqrt{13})$', 'B) $\\cos^{-1}(4/5\\sqrt{13})$', 'C) $90°$', 'D) $0°$'], ans: 'A'},
+        {type: 'SC', q: 'A particle moves with $v = 3t^2 - 6t$ m/s. Distance travelled in first 3s is:', opt: ['A) 4 m', 'B) 8 m', 'C) 12 m', 'D) 0 m'], ans: 'B'},
+        {type: 'SC', q: 'Infinite line charge $\\lambda = 2\\times10^{-6}$ C/m. Field at 0.5m is:', opt: ['A) $36\\times10^3$ N/C', 'B) $72\\times10^3$ N/C', 'C) $18\\times10^3$ N/C', 'D) $9\\times10^3$ N/C'], ans: 'B'},
+        {type: 'SC', q: 'If $\\vec{r} = t^2\\hat{i} + t\\hat{j}$, magnitude of acceleration at t=1s is:', opt: ['A) 2 m/s²', 'B) $\\sqrt{5}$ m/s²', 'C) $\\sqrt{2}$ m/s²', 'D) 4 m/s²'], ans: 'A'},
+        {type: 'MC', q: 'For half infinite line charge ending at origin, field at $(0,a)$ has:', opt: ['A) x-component non-zero', 'B) y-component = $\\lambda/4\\pi\\varepsilon_0 a$', 'C) Angle 45° with y-axis', 'D) Magnitude $\\lambda/2\\pi\\varepsilon_0 a$'], ans: ['A','B','C']},
+        {type: 'MC', q: 'If $\\vec{A}\\cdot\\vec{B} = 0$ and $\\vec{A}\\times\\vec{B} \\neq 0$ then:', opt: ['A) A or B may be zero', 'B) A and B are perpendicular', 'C) A and B are non-zero', 'D) Angle is 90°'], ans: ['B','C','D']},
+        {type: 'MC', q: 'For rectilinear motion with $a = -kv$, which is true:', opt: ['A) v decreases exponentially', 'B) $x = (v_0/k)(1-e^{-kt})$', 'C) Particle stops at finite distance', 'D) a-t graph is straight line'], ans: ['A','B','C']},
+        {type: 'MC', q: 'Two sheets $+2\\sigma$ and $-\\sigma$. Field is:', opt: ['A) $3\\sigma/2\\varepsilon_0$ between', 'B) $\\sigma/2\\varepsilon_0$ outside left', 'C) Zero outside right', 'D) Same everywhere between'], ans: ['A','B','D']},
+        {type: 'NV', q: 'Resultant of 5N and 12N can be minimum ___ N', ans: '7'},
+        {type: 'NV', q: 'If $\\vec{A} = \\hat{i} + \\hat{j} + \\hat{k}$, then $|\\vec{A} \\times \\hat{i}|^2$ = ___', ans: '2'},
+        {type: 'NV', q: 'Charge per unit area is $8.85\\times10^{-12}$ C/m². Field near sheet in N/C is ___', ans: '0.5'},
+        {type: 'NV', q: 'For $x = t^3 - 6t^2 + 9t$, velocity zero at t = ___ s. Give sum of all values', ans: '4'}
+    ],
+    Chemistry: [
+        {type: 'SC', q: 'IUPAC name of $CH_3-CH=CH-C≡CH$ is:', opt: ['A) Pent-2-en-4-yne', 'B) Pent-3-en-1-yne', 'C) Pent-1-yne-3-ene', 'D) Pent-2-yne-3-ene'], ans: 'B'},
+        {type: 'SC', q: 'Most stable carbocation:', opt: ['A) $CH_3^+$', 'B) $CH_3CH_2^+$', 'C) $(CH_3)_2CH^+$', 'D) $(CH_3)_3C^+$'], ans: 'D'},
+        {type: 'SC', q: 'Bond angle in sp³d hybridisation:', opt: ['A) 109°28\'', 'B) 120°, 90°', 'C) 180°', 'D) 90°'], ans: 'B'},
+        {type: 'SC', q: 'For 1st order reaction, $t_{1/2}$ = 10 min. Rate constant is:', opt: ['A) 0.0693 min⁻¹', 'B) 0.693 min⁻¹', 'C) 6.93 min⁻¹', 'D) 0.00693 min⁻¹'], ans: 'A'},
+        {type: 'MC', q: 'Which have zero dipole moment:', opt: ['A) $CO_2$', 'B) $BF_3$', 'C) $H_2O$', 'D) $CH_4$'], ans: ['A','B','D']},
+        {type: 'MC', q: 'Factors affecting rate constant k:', opt: ['A) Temperature', 'B) Catalyst', 'C) Concentration', 'D) $E_a$'], ans: ['A','B','D']},
+        {type: 'MC', q: '-I effect groups:', opt: ['A) $-NO_2$', 'B) $-CH_3$', 'C) -F', 'D) $-OCH_3$'], ans: ['A','C']},
+        {type: 'MC', q: 'For $[Co(NH_3)_6]^{3+}$:', opt: ['A) d²sp³ hybridisation', 'B) Inner orbital complex', 'C) Paramagnetic', 'D) Octahedral'], ans: ['A','B','D']},
+        {type: 'NV', q: 'Moles in 49g $H_2SO_4$ is ___. Molar mass = 98', ans: '0.5'},
+        {type: 'NV', q: 'Number of sigma bonds in benzene is ___', ans: '12'},
+        {type: 'NV', q: 'IE₁ of Na = 496 kJ/mol, IE₂ = 4562 kJ/mol. For $Na \\to Na^{2+} + 2e^-$, energy = ___ kJ/mol', ans: '5058'},
+        {type: 'NV', q: 'For $2A \\to B$, if $-d[A]/dt = 0.02$ M/s, $+d[B]/dt$ = ___ ×10⁻² M/s', ans: '1'}
+    ],
+    Maths: [
+        {type: 'SC', q: 'Domain of $f(x) = \\sqrt{\\log_{0.5}(x-1)}$ is:', opt: ['A) $(1,2]$', 'B) $[2,∞)$', 'C) $(1,∞)$', 'D) $(0,1]$'], ans: 'A'},
+        {type: 'SC', q: 'If $f(x) = x^2$ and $g(x) = 2x+1$, then $f\\circ g(2)$ =', opt: ['A) 25', 'B) 9', 'C) 5', 'D) 17'], ans: 'A'},
+        {type: 'SC', q: '$\\lim_{x\\to0} \\frac{\\log(1+2x)}{x}$ =', opt: ['A) 1', 'B) 2', 'C) 0', 'D) ∞'], ans: 'B'},
+        {type: 'SC', q: 'Number of functions from {1,2,3} to {a,b} is:', opt: ['A) 6', 'B) 8', 'C) 9', 'D) 5'], ans: 'B'},
+        {type: 'MC', q: 'For $f(x) = |x-1| + |x-2|$, which true:', opt: ['A) Continuous everywhere', 'B) Differentiable at x=1.5', 'C) Min value 1', 'D) Not differentiable at x=1'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'If $y = \\log(x + \\sqrt{x^2+1})$, then:', opt: ['A) Odd function', 'B) $dy/dx = 1/\\sqrt{x^2+1}$', 'C) Inverse is $\\sinh x$', 'D) Even function'], ans: ['A','B','C']},
+        {type: 'MC', q: 'For onto function from A to B, if n(A)=4, n(B)=2:', opt: ['A) Total functions 16', 'B) Onto functions 14', 'C) Into functions 2', 'D) Bijective 0'], ans: ['A','B','D']},
+        {type: 'MC', q: 'Graph of $y = |\\log x|$ is:', opt: ['A) Defined for x>0', 'B) Has minima at x=1', 'C) Decreasing in (0,1)', 'D) Symmetric about y-axis'], ans: ['A','B','C']},
+        {type: 'NV', q: 'If $f(x) = x^3 - 6x^2 + 9x$, sum of x where f\'(x)=0 is ___', ans: '4'},
+        {type: 'NV', q: 'Range of $f(x) = \\frac{x^2}{1+x^2}$ is [0,a). Value of a is ___', ans: '1'},
+        {type: 'NV', q: 'Number of integers in domain of $\\sqrt{4-x^2} + \\sqrt{x^2-1}$ is ___', ans: '3'},
+        {type: 'NV', q: 'If $\\log_2 x + \\log_4 x = 6$, then x = ___', ans: '16'}
+    ]
+};
+
+let currentSub = 'Physics', currentQ = 0, answers = {};
+let time = 3*60*60;
+
+function init() {
+    renderPalette();
+    showQ();
+    setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    if(time <= 0) { submitTest(); return; }
+    time--;
+    let h = Math.floor(time/3600), m = Math.floor((time%3600)/60), s = time%60;
+    document.getElementById('timer').textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function renderPalette() {
+    let html = '', idx = 0;
+    ['Physics','Chemistry','Maths'].forEach(sub => {
+        testData[sub].forEach((q,i) => {
+            html += `<button class="q-btn" id="qbtn${idx}" onclick="jumpQ('${sub}',${i})">${idx+1}</button>`;
+            idx++;
+        });
+    });
+    document.getElementById('palette').innerHTML = html;
+}
+
+function showSubject(sub) {
+    currentSub = sub; currentQ = 0;
+    document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    showQ();
+}
+
+function showQ() {
+    const q = testData[currentSub][currentQ];
+    const globalIdx = getGlobalIdx();
+    document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('current'));
+    document.getElementById(`qbtn${globalIdx}`).classList.add('current');
+
+    let html = `<div class="section-title">${currentSub} - Question ${globalIdx+1} | ${q.type=='SC'?'Single Correct':q.type=='MC'?'Multiple Correct':'Numerical Value'}</div>`;
+    html += `<div class="question"><b>Q${globalIdx+1}.</b> ${q.q}<br><br>`;
+
+    if(q.type == 'NV') {
+        html += `Answer: <input type="text" class="num-input" id="ans${globalIdx}" value="${answers[globalIdx]||''}" onchange="saveAns(${globalIdx}, this.value)">`;
+    } else {
+        html += '<div class="options">';
+        q.opt.forEach((opt,i) => {
+            const val = String.fromCharCode(65+i);
+            const checked = answers[globalIdx]?.includes(val)? 'checked' : '';
+            const type = q.type=='SC'? 'radio' : 'checkbox';
+            const name = q.type=='SC'? `q${globalIdx}` : `q${globalIdx}_${i}`;
+            html += `<label><input type="${type}" name="${name}" value="${val}" ${checked} onchange="saveAns(${globalIdx}, '${val}', '${q.type}')"> ${opt}</label>`;
+        });
+        html += '</div>';
+    }
+    html += '</div>';
+    document.getElementById('questions').innerHTML = html;
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+function saveAns(idx, val, type) {
+    if(type=='SC') answers[idx] = [val];
+    else if(type=='MC') {
+        if(!answers[idx]) answers[idx] = [];
+        if(answers[idx].includes(val)) answers[idx] = answers[idx].filter(v=>v!=val);
+        else answers[idx].push(val);
+    } else answers[idx] = val;
+    document.getElementById(`qbtn${idx}`).classList.add('answered');
+}
+
+function getGlobalIdx() {
+    let idx = 0;
+    for(let sub of ['Physics','Chemistry','Maths']) {
+        if(sub == currentSub) return idx + currentQ;
+        idx += testData[sub].length;
+    }
+}
+
+function nextQ() {
+    if(currentQ < testData[currentSub].length - 1) currentQ++;
+    else {
+        const subs = ['Physics','Chemistry','Maths'];
+        const nextSub = subs[subs.indexOf(currentSub)+1];
+        if(nextSub) { currentSub = nextSub; currentQ = 0; showSubject(currentSub); return; }
+    }
+    showQ();
+}
+
+function jumpQ(sub, q) {
+    currentSub = sub; currentQ = q;
+    document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.subject-btn')[['Physics','Chemistry','Maths'].indexOf(sub)].classList.add('active');
+    showQ();
+}
+
+function submitTest() {
+    if(!confirm('Submit test? You cannot change answers after this.')) return;
+    let score = 0, total = 0, idx = 0, details = '';
+
+    ['Physics','Chemistry','Maths'].forEach(sub => {
+        let subScore = 0, subTotal = 0;
+        testData[sub].forEach(q => {
+            let marks = 0;
+            if(q.type=='SC') {
+                subTotal += 3; total += 3;
+                if(answers[idx]?.[0] == q.ans) marks = 3;
+                else if(answers[idx]?.[0]) marks = -1;
+            } else if(q.type=='MC') {
+                subTotal += 4; total += 4;
+                const userAns = answers[idx]||[];
+                const correctAns = q.ans;
+                if(userAns.length==0) marks = 0;
+                else if(userAns.sort().join()==correctAns.sort().join()) marks = 4;
+                else if(userAns.every(v=>correctAns.includes(v))) marks = userAns.length;
+                else marks = -2;
+            } else {
+                subTotal += 4; total += 4;
+                if(answers[idx] == q.ans) marks = 4;
+            }
+            subScore += marks; score += marks; idx++;
+        });
+        details += `<div class="score-box"><b>${sub}</b><br>Score: ${subScore}/${subTotal}</div>`;
+    });
+
+    document.getElementById('content').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('result').innerHTML = `
+        <h2>Test Submitted!</h2>
+        <h3>Total Score: ${score}/${total}</h3>
+        <div>${details}</div>
+        <p style="margin-top:15px;">Time Taken: ${Math.floor((3*60*60-time)/60)} min ${Math.floor((3*60*60-time)%60)} sec</p>
+        <p style="margin-top:10px; color:#666;">JEE Adv Cutoff ~ 120/360 for decent IIT</p>
+        <button class="btn btn-next" onclick="location.reload()">Restart Test</button>
+    `;
+    document.getElementById('timer').textContent = '00:00:00';
+}
+
+init();
+</script>
+</body>
+</html>
