@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEE Advanced 2025 - Paper 1 Mock Test | Shubham Study Hub</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
+            svg: {fontCache: 'global'}
+        };
+    </script>
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif;}
+        body {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 8px; font-size: 14px; min-height: 100vh;}
+     .container {max-width: 1200px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.3);}
+     .header {background: linear-gradient(90deg, #1a237e, #3949ab); color: white; padding: 15px 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;}
+     .header h3 {font-size: 18px;}
+     .header .brand {font-size: 12px; opacity: 0.8;}
+     .timer {background: #b71c1c; padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 18px; letter-spacing: 1px; display: none; box-shadow: 0 2px 8px rgba(183,28,0.4);}
+     .syllabus-screen {padding: 30px; text-align: center;}
+     .syllabus-screen h1 {color: #1a237e; margin-bottom: 10px; font-size: 32px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);}
+     .syllabus-screen h2 {color: #3949ab; margin-bottom: 25px; font-size: 20px;}
+     .syllabus-box {background: #f5f5f5; border: 2px solid #c5cae9; border-radius: 10px; padding: 20px; margin: 20px auto; max-width: 850px; text-align: left;}
+     .syllabus-box h3 {color: #1a237e; margin-bottom: 15px; border-bottom: 3px solid #3f51b5; padding-bottom: 8px;}
+     .syllabus-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;}
+     .syllabus-subject {background: white; padding: 15px; border-radius: 8px; border-left: 5px solid #3f51b5; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+     .syllabus-subject h4 {color: #3949ab; margin-bottom: 10px; font-size: 16px;}
+     .syllabus-subject ul {list-style: none; padding-left: 5px;}
+     .syllabus-subject li {padding: 5px 0; font-size: 13px; color: #333;}
+     .syllabus-subject li:before {content: "✓ "; color: #4caf50; font-weight: bold;}
+     .instructions-box {background: #fff8e1; border-left: 5px solid #ffa000; padding: 18px; margin: 20px auto; max-width: 850px; text-align: left; border-radius: 6px;}
+     .instructions-box h4 {color: #e65100; margin-bottom: 12px; font-size: 16px;}
+     .instructions-box ul {margin-left: 20px; line-height: 1.9; font-size: 13px;}
+     .instructions-box li b {color: #d84315;}
+     .start-btn {background: linear-gradient(135deg, #2e7d32, #1b5e20); color: white; padding: 16px 60px; border: none; border-radius: 8px; font-size: 20px; font-weight: 700; cursor: pointer; margin-top: 25px; transition: 0.3s; box-shadow: 0 4px 15px rgba(46,125,50,0.4);}
+     .start-btn:hover {transform: scale(1.05) translateY(-2px); box-shadow: 0 6px 20px rgba(46,125,50,0.6);}
+     .extra-info {margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 6px; max-width: 850px; margin-left: auto; margin-right: auto; font-size: 12px; color: #1565c0;}
+     .test-screen {display: none;}
+     .main {display: flex; min-height: 600px; flex-direction: column;}
+        @media (min-width: 900px) {.main {flex-direction: row;}}
+     .sidebar {width: 100%; background: #f5f5f5; padding: 12px; border-bottom: 2px solid #ddd;}
+        @media (min-width: 900px) {.sidebar {width: 280px; border-right: 2px solid #ddd; border-bottom: none; max-height: 85vh; overflow-y: auto;}}
+     .subject-btn {width: 100%; padding: 10px; margin: 5px 0; border: none; background: #5c6bc0; color: white; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s;}
+     .subject-btn.active {background: #1a237e; transform: scale(1.02); box-shadow: 0 2px 8px rgba(26,35,126,0.4);}
+     .subject-btn:hover {background: #3f51b5;}
+     .q-palette {display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 10px; max-height: 300px; overflow-y: auto; padding: 5px;}
+     .q-btn {padding: 7px 0; border: 1px solid #999; background: white; cursor: pointer; border-radius: 4px; font-size: 11px; font-weight: 600; transition: 0.2s;}
+     .q-btn.answered {background: #43a047; color: white; border-color: #2e7d32;}
+     .q-btn.current {background: #fb8c00; color: white; border-color: #ef6c00; transform: scale(1.1);}
+     .q-btn.not-visited {background: #e0e0e0;}
+     .q-btn:hover {transform: scale(1.05);}
+     .legend {display: flex; gap: 10px; margin: 10px 0; font-size: 11px; flex-wrap: wrap;}
+     .legend span {display: flex; align-items: center; gap: 3px;}
+     .legend-box {width: 15px; height: 15px; border: 1px solid #999; border-radius: 2px;}
+     .progress-bar {width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px; margin: 10px 0; overflow: hidden;}
+     .progress-fill {height: 100%; background: linear-gradient(90deg, #4caf50, #2e7d32); transition: width 0.3s; border-radius: 4px;}
+     .content {flex: 1; padding: 18px; max-height: 85vh; overflow-y: auto;}
+     .section-title {background: #c5cae9; padding: 10px; margin-bottom: 15px; border-left: 5px solid #3f51b5; font-weight: 700; font-size: 14px; border-radius: 4px;}
+     .question {margin-bottom: 25px; padding: 18px; border: 2px solid #c5cae9; border-radius: 8px; line-height: 1.8; background: #fafafa;}
+     .options label {display: block; padding: 12px; margin: 7px 0; border: 2px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.2s;}
+     .options label:hover {background: #e8eaf6; border-color: #3f51b5; transform: translateX(3px);}
+     .options input {margin-right: 8px; transform: scale(1.2);}
+     .num-input {padding: 12px; width: 200px; font-size: 16px; border: 2px solid #3f51b5; border-radius: 6px; margin-top: 10px;}
+     .nav-btns {margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;}
+     .btn {padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 14px; transition: 0.2s;}
+     .btn-next {background: #3949ab; color: white;}
+     .btn-next:hover {background: #303f9f; transform: translateY(-2px);}
+     .btn-clear {background: #757575; color: white;}
+     .btn-clear:hover {background: #616161;}
+     .btn-submit {background: #c62828; color: white; width: 100%; margin-top: 15px;}
+     .btn-submit:hover {background: #b71c1c; transform: translateY(-2px);}
+     .result {display: none; padding: 30px; text-align: center;}
+     .result h2 {color: #1a237e; margin-bottom: 20px; font-size: 28px;}
+     .score-box {display: inline-block; padding: 20px 35px; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-radius: 10px; margin: 10px; border: 3px solid #4caf50; box-shadow: 0 3px 10px rgba(76,175,80,0.3);}
+     .score-box b {font-size: 18px; color: #1b5e20;}
+     .analysis {margin-top: 25px; text-align: left; max-width: 700px; margin-left: auto; margin-right: auto; background: #f5f5f5; padding: 20px; border-radius: 8px;}
+     .analysis table {width: 100%; border-collapse: collapse; margin-top: 10px;}
+     .analysis td,.analysis th {border: 1px solid #ccc; padding: 10px; text-align: center;}
+     .analysis th {background: #3f51b5; color: white; font-size: 14px;}
+     .analysis tr:nth-child(even) {background: #fafafa;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h3>JEE Advanced 2025 - Paper 1 Mock Test</h3>
+                <div class="brand">by Shubham Study Hub</div>
+            </div>
+            <div class="timer" id="timer">03:00:00</div>
+        </div>
+
+        <div class="syllabus-screen" id="syllabusScreen">
+            <h1>JEE Advanced 2025</h1>
+            <h2>Paper 1 - Full Syllabus Mock Test</h2>
+
+            <div class="syllabus-box">
+                <h3>📚 Test Syllabus - As Per Your Image</h3>
+                <div class="syllabus-grid">
+                    <div class="syllabus-subject">
+                        <h4>🔵 Physics</h4>
+                        <ul>
+                            <li>Vector (C)</li>
+                            <li>Calculus (C)</li>
+                            <li>Kinematics - Up to Rectilinear Motion</li>
+                            <li>Electrostatics - 1 (C)</li>
+                        </ul>
+                    </div>
+                    <div class="syllabus-subject">
+                        <h4>🟢 Chemistry</h4>
+                        <ul>
+                            <li>OC: IUPAC (C), GOC (C)</li>
+                            <li>IOC: Chemical Bonding 11 (C)</li>
+                            <li>Periodic Property (C)</li>
+                            <li>PC: Mole (C), Chemical Kinetics (C)</li>
+                        </ul>
+                    </div>
+                    <div class="syllabus-subject">
+                        <h4>🔴 Mathematics</h4>
+                        <ul>
+                            <li>Basic Graph, Basic Math (C)</li>
+                            <li>LOG (C)</li>
+                            <li>Function - Set, Graph, Relation</li>
+                            <li>Domain, Range, Classification</li>
+                            <li>Composite Function</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="instructions-box">
+                <h4>⚠️ Important Instructions - Read Carefully</h4>
+                <ul>
+                    <li><b>Total Questions:</b> 51 (17 Physics + 17 Chemistry + 17 Mathematics)</li>
+                    <li><b>Duration:</b> 3 Hours (180 Minutes) - Timer will start after you click "Start Test"</li>
+                    <li><b>Maximum Marks:</b> 183</li>
+                    <li><b>Section 1 (Q1-4 per subject):</b> Single Correct - +3 for correct, -1 for wrong</li>
+                    <li><b>Section 2 (Q5-10 per subject):</b> Multiple Correct - +4 for all correct, -2 for wrong, +1 per correct option if partial</li>
+                    <li><b>Section 3 (Q11-17 per subject):</b> Numerical Value - +4 for correct, 0 for wrong. Answer upto 2 decimal places</li>
+                    <li><b>Navigation:</b> Use Question Palette to jump to any question. Green = Answered, Orange = Current</li>
+                    <li><b>Auto Submit:</b> Test will auto-submit when time is over</li>
+                    <li><b>New Feature:</b> Progress bar added to track completion percentage</li>
+                </ul>
+            </div>
+
+            <button class="start-btn" id="startTestBtn">🚀 START TEST</button>
+            <div class="extra-info">
+                <b>💡 Pro Tip:</b> Single Correct mein guess mat marna (-1 lagega). Numerical Value mein negative nahi hai, attempt zaroor karna! All the best for 17th May 💪
+            </div>
+        </div>
+
+        <div class="test-screen" id="testScreen">
+            <div class="main">
+                <div class="sidebar">
+                    <button class="subject-btn active" data-subject="Physics">Physics (1-17)</button>
+                    <button class="subject-btn" data-subject="Chemistry">Chemistry (18-34)</button>
+                    <button class="subject-btn" data-subject="Maths">Maths (35-51)</button>
+
+                    <div class="legend">
+                        <span><div class="legend-box" style="background:#43a047;"></div> Answered</span>
+                        <span><div class="legend-box" style="background:#fb8c00;"></div> Current</span>
+                        <span><div class="legend-box" style="background:#e0e0e0;"></div> Not Visited</span>
+                    </div>
+
+                    <h5 style="margin-top: 12px;">Question Palette</h5>
+                    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+                    <div class="q-palette" id="palette"></div>
+                    <button class="btn btn-submit" id="finalSubmitBtn">Final Submit</button>
+                </div>
+                <div class="content" id="content">
+                    <div id="questions"></div>
+                    <div class="nav-btns">
+                        <button class="btn btn-clear" id="clearBtn">Clear Response</button>
+                        <button class="btn btn-next" id="nextBtn">Save & Next</button>
+                    </div>
+                </div>
+                <div class="result" id="result"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+window.MathJax = {
+    tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
+    svg: {fontCache: 'global'}
+};
+
+const testData = {
+    Physics: [
+        {type: 'SC', q: 'If $\\vec{A} = 3\\hat{i} + 4\\hat{j}$ and $\\vec{B} = 6\\hat{i} + 8\\hat{j}$, then unit vector along $\\vec{A} + \\vec{B}$ is:', opt: ['A) $(9\\hat{i} + 12\\hat{j})/15$', 'B) $(3\\hat{i} + 4\\hat{j})/5$', 'C) $(6\\hat{i} + 8\\hat{j})/10$', 'D) Both A and B'], ans: 'D'},
+        {type: 'SC', q: 'A particle has velocity $v = 4t - t^2$ m/s. Displacement in first 3s is:', opt: ['A) 9 m', 'B) 18 m', 'C) 0 m', 'D) 4.5 m'], ans: 'A'},
+        {type: 'SC', q: 'Electric field at distance r from infinite line charge $\\lambda$ is $E$. At r/2, field becomes:', opt: ['A) E', 'B) 2E', 'C) E/2', 'D) 4E'], ans: 'B'},
+        {type: 'SC', q: 'If $\\frac{dv}{dt} = -2v$, and v(0)=10 m/s, then v(1) is:', opt: ['A) $10e^{-2}$ m/s', 'B) $10e^2$ m/s', 'C) 5 m/s', 'D) 8 m/s'], ans: 'A'},
+        {type: 'MC', q: 'For vector $\\vec{A} = \\hat{i} + \\hat{j} + \\hat{k}$, which are true:', opt: ['A) $|\\vec{A}| = \\sqrt{3}$', 'B) Angle with x-axis is $\\cos^{-1}(1/\\sqrt{3})$', 'C) $\\vec{A} \\cdot \\hat{i} = 1$', 'D) $\\vec{A} \\times \\hat{i} = \\hat{k} - \\hat{j}$'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'For motion under constant acceleration a, initial velocity u:', opt: ['A) $v^2 = u^2 + 2as$', 'B) $s = ut + \\frac{1}{2}at^2$', 'C) v-t graph is straight line', 'D) a-t graph is straight line parallel to t-axis'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'Two infinite sheets with $+\\sigma$ and $+\\sigma$:', opt: ['A) Field between them is zero', 'B) Field outside is $\\sigma/\\varepsilon_0$', 'C) Force on q between sheets is zero', 'D) Potential difference between sheets is zero'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'If $\\vec{r} = 2t\\hat{i} + t^2\\hat{j}$, then at t=1:', opt: ['A) $\\vec{v} = 2\\hat{i} + 2\\hat{j}$', 'B) $\\vec{a} = 2\\hat{j}$', 'C) Speed = $2\\sqrt{2}$ m/s', 'D) $\\vec{v} \\cdot \\vec{a} = 4$'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'For half infinite line charge from x=0 to ∞, field at (0,a):', opt: ['A) $E_x = \\lambda/4\\pi\\varepsilon_0 a$', 'B) $E_y = \\lambda/4\\pi\\varepsilon_0 a$', 'C) $|E| = \\lambda/2\\sqrt{2}\\pi\\varepsilon_0 a$', 'D) Angle with y-axis is 45°'], ans: ['A','B','D']},
+        {type: 'MC', q: 'Which vectors are unit vectors:', opt: ['A) $(\\hat{i} + \\hat{j})/\\sqrt{2}$', 'B) $\\cos\\theta\\hat{i} + \\sin\\theta\\hat{j}$', 'C) $(3\\hat{i} + 4\\hat{j})/5$', 'D) $\\hat{i} + \\hat{j} + \\hat{k}$'], ans: ['A','B','C']},
+        {type: 'NV', q: 'Magnitude of resultant of 8N and 6N at 90° is ___ N', ans: '10'},
+        {type: 'NV', q: 'If $x = t^3 - 9t^2 + 24t$, acceleration at t=2s is ___ m/s²', ans: '-6'},
+        {type: 'NV', q: 'Two parallel sheets $+3\\times10^{-6}$ C/m² and $-1\\times10^{-6}$ C/m². Field between them in ×10⁵ N/C is ___. Use $1/4\\pi\\varepsilon_0 = 9\\times10^9$', ans: '2.26'},
+        {type: 'NV', q: 'If $|\\vec{A} + \\vec{B}| = |\\vec{A} - \\vec{B}|$ and $|A|=5$, $|B|=12$, then $|\\vec{A} \\times \\vec{B}|$ = ___', ans: '60'},
+        {type: 'NV', q: 'A body covers first half distance with 40 m/s and second half with 60 m/s. Average speed = ___ m/s', ans: '48'},
+        {type: 'NV', q: 'Electric field at 0.1m from line charge $\\lambda = 8.85×10^{-12}$ C/m is ___ N/C', ans: '1.6'},
+        {type: 'NV', q: 'If $\\vec{A} \\cdot \\vec{B} = 0$ and $|\\vec{A}|=3$, $|\\vec{B}|=4$, then $|\\vec{A} + \\vec{B}|$ = ___', ans: '5'}
+    ],
+    Chemistry: [
+        {type: 'SC', q: 'IUPAC name of $CH_3-C≡C-CH=CH_2$ is:', opt: ['A) Pent-1-en-3-yne', 'B) Pent-4-en-2-yne', 'C) Pent-1-yne-4-ene', 'D) Pent-3-en-1-yne'], ans: 'A'},
+        {type: 'SC', q: 'Which is strongest acid:', opt: ['A) $CH_3COOH$', 'B) $ClCH_2COOH$', 'C) $Cl_2CHCOOH$', 'D) $Cl_3CCOOH$'], ans: 'D'},
+        {type: 'SC', q: 'Shape of $XeF_4$ is:', opt: ['A) Tetrahedral', 'B) Square planar', 'C) See-saw', 'D) T-shape'], ans: 'B'},
+        {type: 'SC', q: 'For zero order reaction, unit of k is:', opt: ['A) s⁻¹', 'B) M s⁻¹', 'C) M⁻¹s⁻¹', 'D) M⁻²s⁻¹'], ans: 'B'},
+        {type: 'MC', q: 'Which follow octet rule:', opt: ['A) $BF_3$', 'B) $NH_3$', 'C) $PCl_5$', 'D) $CH_4$'], ans: ['B','D']},
+        {type: 'MC', q: 'Factors increasing rate of reaction:', opt: ['A) Increasing temperature', 'B) Adding catalyst', 'C) Increasing concentration', 'D) Increasing activation energy'], ans: ['A','B','C']},
+        {type: 'MC', q: 'Aromatic compounds:', opt: ['A) Benzene', 'B) Cyclobutadiene', 'C) Naphthalene', 'D) Cyclooctatetraene'], ans: ['A','C']},
+        {type: 'MC', q: 'For $N_2$ molecule:', opt: ['A) Bond order 3', 'B) Diamagnetic', 'C) Has no unpaired electrons', 'D) σ1s² σ*1s² σ2s² σ*2s² π2p⁴ σ2p²'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'Correct order of IE₁:', opt: ['A) Li < Be > B', 'B) N > O', 'C) F > Ne', 'D) Na < Mg'], ans: ['A','B','D']},
+        {type: 'MC', q: 'Which are nucleophiles:', opt: ['A) $OH^-$', 'B) $NH_3$', 'C) $BF_3$', 'D) $H_2O$'], ans: ['A','B','D']},
+        {type: 'NV', q: 'Moles of $O_2$ in 64g is ___', ans: '2'},
+        {type: 'NV', q: 'Number of π bonds in $C_2H_2$ is ___', ans: '2'},
+        {type: 'NV', q: 'For first order, if 75% completed in 32 min, $t_{1/2}$ = ___ min', ans: '16'},
+        {type: 'NV', q: 'Formal charge on N in $NH_4^+$ is ___', ans: '1'},
+        {type: 'NV', q: 'Bond order of $O_2^+$ is ___. Give value × 2', ans: '5'},
+        {type: 'NV', q: 'pH of 10⁻⁸ M HCl is ___. log11=1.04. Answer ×100', ans: '698'},
+        {type: 'NV', q: 'Number of structural isomers of $C_4H_{10}$ is ___', ans: '2'}
+    ],
+    Maths: [
+        {type: 'SC', q: 'Domain of $f(x) = \\log(x^2 - 3x + 2)$ is:', opt: ['A) $(-∞,1) ∪ (2,∞)$', 'B) [1,2]', 'C) R', 'D) $(1,2)$'], ans: 'A'},
+        {type: 'SC', q: 'If $f(x) = 2x + 3$ and $g(x) = x^2 - 1$, then $g \\circ f(1)$ =', opt: ['A) 24', 'B) 8', 'C) 15', 'D) 0'], ans: 'A'},
+        {type: 'SC', q: '$\\lim_{x\\to0} \\frac{e^{3x} - 1}{x}$ =', opt: ['A) 1', 'B) 3', 'C) 0', 'D) ∞'], ans: 'B'},
+        {type: 'SC', q: 'Number of one-one functions from {1,2,3} to {a,b,c,d} is:', opt: ['A) 64', 'B) 24', 'C) 12', 'D) 81'], ans: 'B'},
+        {type: 'MC', q: 'For $f(x) = x|x|$, which true:', opt: ['A) Odd function', 'B) Continuous at x=0', 'C) Differentiable at x=0', 'D) $f\'(0) = 0$'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'If $y = \\sin^{-1}x$, then:', opt: ['A) Domain [-1,1]', 'B) Range $[-π/2,π/2]$', 'C) Increasing function', 'D) $dy/dx = 1/\\sqrt{1-x^2}$'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'For $f(x) = \\frac{x-1}{x+1}$:', opt: ['A) Domain R-{-1}', 'B) Range R-{1}', 'C) One-one function', 'D) $f^{-1}(x) = \\frac{1+x}{1-x}$'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'Properties of $\\log x$:', opt: ['A) Domain (0,∞)', 'B) Increasing function', 'C) $\\log(ab) = \\log a + \\log b$', 'D) Graph cuts x-axis at (1,0)'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'For $f(x) = [x]$, greatest integer function:', opt: ['A) Domain R', 'B) Range Z', 'C) Discontinuous at integers', 'D) Constant between integers'], ans: ['A','B','C','D']},
+        {type: 'MC', q: 'If $f(x+y) = f(x) + f(y)$ and f(1)=2:', opt: ['A) f(0)=0', 'B) f(-x) = -f(x)', 'C) f(2)=4', 'D) f(x)=2x'], ans: ['A','B','C']},
+        {type: 'NV', q: 'If $f(x) = x^3 - 12x$, minimum value is ___', ans: '-16'},
+        {type: 'NV', q: 'Number of integers in range of $f(x) = \\frac{2x}{1+x^2}$ is ___', ans: '3'},
+        {type: 'NV', q: 'If $\\log_3 (x-2) = 2$, then x = ___', ans: '11'},
+        {type: 'NV', q: 'Sum of solutions of $|x-1| + |x-2| = 3$ is ___', ans: '3'},
+        {type: 'NV', q: 'If $A = \\{1,2,3\\}$, number of relations on A is ___', ans: '512'},
+        {type: 'NV', q: 'Derivative of $x^x$ at x=1 is ___', ans: '1'},
+        {type: 'NV', q: 'Area bounded by $y=|x|$, x=-1, x=1 and x-axis is ___', ans: '1'}
+    ]
+};
+
+let currentSub = 'Physics', currentQ = 0, answers = {};
+let time = 3*60*60;
+let startQ = {Physics: 0, Chemistry: 17, Maths: 34};
+let testStarted = false;
+let timerInterval;
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('startTestBtn').addEventListener('click', startTest);
+    document.getElementById('finalSubmitBtn').addEventListener('click', submitTest);
+    document.getElementById('clearBtn').addEventListener('click', clearResponse);
+    document.getElementById('nextBtn').addEventListener('click', nextQ);
+    document.querySelectorAll('.subject-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            showSubject(this.dataset.subject);
+        });
+    });
+});
+
+function startTest() {
+    document.getElementById('syllabusScreen').style.display = 'none';
+    document.getElementById('testScreen').style.display = 'block';
+    document.getElementById('timer').style.display = 'block';
+    testStarted = true;
+    init();
+}
+
+function init() {
+    renderPalette();
+    showQ();
+    timerInterval = setInterval(updateTimer, 1000);
+    updateProgress();
+}
+
+function updateTimer() {
+    if(time <= 0) { submitTest(); return; }
+    time--;
+    let h = Math.floor(time/3600), m = Math.floor((time%3600)/60), s = time%60;
+    document.getElementById('timer').textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function updateProgress() {
+    let answered = Object.keys(answers).filter(k => answers[k] && answers[k].length > 0).length;
+    let percent = (answered / 51) * 100;
+    document.getElementById('progressFill').style.width = percent + '%';
+}
+
+function renderPalette() {
+    let html = '', idx = 0;
+    ['Physics','Chemistry','Maths'].forEach(sub => {
+        testData[sub].forEach((q,i) => {
+            html += `<button class="q-btn not-visited" id="qbtn${idx}" data-sub="${sub}" data-q="${i}">${idx+1}</button>`;
+            idx++;
+        });
+    });
+    document.getElementById('palette').innerHTML = html;
+    document.querySelectorAll('.q-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            jumpQ(this.dataset.sub, parseInt(this.dataset.q));
+        });
+    });
+}
+
+function showSubject(sub) {
+    currentSub = sub; currentQ = 0;
+    document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.subject-btn[data-subject="${sub}"]`).classList.add('active');
+    showQ();
+}
+
+function showQ() {
+    const q = testData[currentSub][currentQ];
+    const globalIdx = startQ[currentSub] + currentQ;
+    document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('current'));
+    const currentBtn = document.getElementById(`qbtn${globalIdx}`);
+    if(currentBtn) {
+        currentBtn.classList.remove('not-visited');
+        currentBtn.classList.add('current');
+    }
+    let section = currentQ < 4? '1' : currentQ < 10? '2' : '3';
+    let secType = q.type=='SC'?'Single Correct':q.type=='MC'?'Multiple Correct':'Numerical Value';
+    let html = `<div class="section-title">${currentSub} - Section ${section} | Question ${globalIdx+1}/51 | ${secType}</div>`;
+    html += `<div class="question"><b>Q${globalIdx+1}.</b> ${q.q}<br><br>`;
+    if(q.type == 'NV') {
+        html += `Enter Answer: <input type="text" class="num-input" id="ans${globalIdx}" value="${answers[globalIdx]||''}" placeholder="Enter numerical value">`;
+    } else {
+        html += '<div class="options">';
+        q.opt.forEach((opt,i) => {
+            const val = String.fromCharCode(65+i);
+            const checked = answers[globalIdx]?.includes(val)? 'checked' : '';
+            const type = q.type=='SC'? 'radio' : 'checkbox';
+            const name = q.type=='SC'? `q${globalIdx}` : `q${globalIdx}_${i}`;
+            html += `<label><input type="${type}" name="${name}" value="${val}" ${checked} data-idx="${globalIdx}" data-val="${val}" data-type="${q.type}"> ${opt}</label>`;
+        });
+        html += '</div>';
+    }
+    html += '</div>';
+    document.getElementById('questions').innerHTML = html;
+    if(q.type == 'NV') {
+        document.getElementById(`ans${globalIdx}`).addEventListener('change', function() {
+            saveAns(globalIdx, this.value);
+        });
+    } else {
+        document.querySelectorAll('.options input').forEach(input => {
+            input.addEventListener('change', function() {
+                saveAns(parseInt(this.dataset.idx), this.dataset.val, this.dataset.type);
+            });
+        });
+    }
+    if(window.MathJax) MathJax.typesetPromise();
+    updateProgress();
+}
+
+function saveAns(idx, val, type) {
+    if(type=='SC') answers[idx] = [val];
+    else if(type=='MC') {
+        if(!answers[idx]) answers[idx] = [];
+        if(answers[idx].includes(val)) answers[idx] = answers[idx].filter(v=>v!=val);
+        else answers[idx].push(val);
+    } else answers[idx] = val;
+    if(answers[idx] && answers[idx].length > 0) document.getElementById(`qbtn${idx}`).classList.add('answered');
+    else document.getElementById(`qbtn${idx}`).classList.remove('answered');
+    updateProgress();
+}
+
+function clearResponse() {
+    const globalIdx = startQ[currentSub] + currentQ;
+    delete answers[globalIdx];
+    document.getElementById(`qbtn${globalIdx}`).classList.remove('answered');
+    showQ();
+}
+
+function nextQ() {
+    if(currentQ < testData[currentSub].length - 1) currentQ++;
+    else {
+        const subs = ['Physics','Chemistry','Maths'];
+        const nextSub = subs[subs.indexOf(currentSub)+1];
+        if(nextSub) {
+            currentSub = nextSub; currentQ = 0;
+            document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.subject-btn[data-subject="${nextSub}"]`).classList.add('active');
+        }
+    }
+    showQ();
+}
+
+function jumpQ(sub, q) {
+    currentSub = sub; currentQ = q;
+    document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.subject-btn[data-subject="${sub}"]`).classList.add('active');
+    showQ();
+}
+
+function submitTest() {
+    if(!confirm('Are you sure you want to submit? You cannot change answers after this.')) return;
+    clearInterval(timerInterval);
+    let score = 0, total = 0, idx = 0;
+    let analysis = {Physics: {correct:0, wrong:0, unattempt:0, score:0}, Chemistry: {correct:0, wrong:0, unattempt:0, score:0}, Maths: {correct:0, wrong:0, unattempt:0, score:0}};
+    ['Physics','Chemistry','Maths'].forEach(sub => {
+        let subTotal = 0, subScore = 0;
+        testData[sub].forEach((q,i) => {
+            let marks = 0;
+            if(q.type=='SC') {
+                subTotal += 3; total += 3;
+                if(!answers[idx] || answers[idx].length==0) analysis[sub].unattempt++;
+                else if(answers[idx][0] == q.ans) { marks = 3; analysis[sub].correct++; }
+                else { marks = -1; analysis[sub].wrong++; }
+            } else if(q.type=='MC') {
+                subTotal += 4; total += 4;
+                const userAns = answers[idx]||[];
+                const correctAns = q.ans;
+                if(userAns.length==0) { marks = 0; analysis[sub].unattempt++; }
+                else if(userAns.sort().join()==correctAns.sort().join()) { marks = 4; analysis[sub].correct++; }
+                else if(userAns.every(v=>correctAns.includes(v))) { marks = userAns.length; analysis[sub].wrong++; }
+                else { marks = -2; analysis[sub].wrong++; }
+            } else {
+                subTotal += 4; total += 4;
+                if(!answers[idx]) { marks = 0; analysis[sub].unattempt++; }
+                else if(Math.abs(parseFloat(answers[idx]) - parseFloat(q.ans)) < 0.01) { marks = 4; analysis[sub].correct++; }
+                else { marks = 0; analysis[sub].wrong++; }
+            }
+            subScore += marks; score += marks; idx++;
+        });
+        analysis[sub].score = subScore; analysis[sub].total = subTotal;
+    });
+    let detailHTML = '<table><tr><th>Subject</th><th>Correct</th><th>Wrong</th><th>Unattempt</th><th>Score</th></tr>';
+    ['Physics','Chemistry','Maths'].forEach(sub => {
+        detailHTML += `<tr><td>${sub}</td><td>${analysis[sub].correct}</td><td>${analysis[sub].wrong}</td><td>${analysis[sub].unattempt}</td><td>${analysis[sub].score}/${analysis[sub].total}</td></tr>`;
+    });
+    detailHTML += '</table>';
+    document.getElementById('content').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('result').innerHTML = `
+        <h2>Test Submitted Successfully!</h2>
+        <h3 style="color:${score>=100?'#2e7d32':'#c62828'};">Total Score: ${score}/183</h3>
+        <div>
+            <div class="score-box"><b>Physics</b><br>${analysis.Physics.score}/60</div>
+            <div class="score-box"><b>Chemistry</b><br>${analysis.Chemistry.score}/60</div>
+            <div class="score-box"><b>Maths</b><br>${analysis.Maths.score}/63</div>
+        </div>
+        <div class="analysis">
+            <h3>Subject-wise Analysis</h3>
+            ${detailHTML}
+            <p style="margin-top:15px;"><b>Time Taken:</b> ${Math.floor((3*60*60-time)/60)} min ${Math.floor((3*60*60-time)%60)} sec</p>
+            <p style="margin-top:10px; color:#666;"><b>JEE Adv 2024 Cutoff:</b> General ~125/360, OBC ~115/360</p>
+            <p style="margin-top:5px; color:${score>=100?'#2e7d32':'#d32f2f'}; font-weight:600;">
+                ${score>=120?'Excellent! IIT Bombay level 🔥':score>=100?'Good! Mid IIT level 💪':score>=60?'Average, practice more 📚':'Need more practice 😓'}
+            </p>
+            <p style="margin-top:15px; font-size: 12px; color: #555;"><b>Accuracy:</b> ${((analysis.Physics.correct + analysis.Chemistry.correct + analysis.Maths.correct)/51*100).toFixed(1)}% | <b>Attempted:</b> ${51 - analysis.Physics.unattempt - analysis.Chemistry.unattempt - analysis.Maths.unattempt}/51</p>
+        </div>
+        <button class="btn btn-next" onclick="location.reload()" style="margin-top:20px;">Restart Test</button>
+    `;
+    document.getElementById('timer').textContent = '00:00:00';
+}
+</script>
+</body>
+</html>
